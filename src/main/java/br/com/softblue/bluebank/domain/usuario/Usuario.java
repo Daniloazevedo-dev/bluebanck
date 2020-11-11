@@ -1,14 +1,20 @@
 package br.com.softblue.bluebank.domain.usuario;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import br.com.softblue.bluebank.domain.conta.ContaBancaria;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,5 +46,7 @@ public class Usuario {
     
     @NotEmpty(message = "A senha não pode ser vazio")
     private String senha;
-    
+        
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<ContaBancaria> contas = new ArrayList<>();
 }

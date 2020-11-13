@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import br.com.softblue.bluebank.domain.usuario.Usuario;
@@ -33,13 +34,14 @@ public class ContaBancaria {
     @Column(nullable = false)
     private TiposDeConta tipo;
     
-    @NotNull
+    @NotEmpty(message = "O número da conta não pode ser vazio!")
     @Column(nullable = false, unique = true)
-    private Integer numero;
+    private String numero;
     
     @Min(0)
     private BigDecimal saldo;
     
+    @NotNull
     @ManyToOne(optional = false)
     private Usuario usuario;
         

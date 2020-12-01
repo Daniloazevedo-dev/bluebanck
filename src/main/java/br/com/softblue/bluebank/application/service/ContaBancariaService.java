@@ -19,7 +19,7 @@ public class ContaBancariaService {
     @Autowired
     private ContaBancariaRepository contaBancariaRepository;
     
-   public List<ContaBancaria> novaConta (Usuario usuario){
+   public List<ContaBancaria> novaConta (Usuario usuario) {
        
        List<ContaBancaria> contasBancarias = new ArrayList<>();       
        
@@ -49,16 +49,17 @@ public class ContaBancariaService {
    private String gerarNumeroDaConta() {
        
        String numeroDaconta = null;
-       boolean existe = false;
+       boolean contaExistente = true;
        
-       do {
-	   numeroDaconta =  GerarNumero.gerar();
-	   
-	   if(pesquisaPorNumeroDaConta(numeroDaconta) == null) {
-	       existe = true;
-	   }
-	   
-       } while (!existe);
+	   do {
+		   numeroDaconta =  GerarNumero.gerar();
+		   
+		   if(pesquisaPorNumeroDaConta(numeroDaconta) == null) {
+		       contaExistente = false;
+		   }
+		   
+	      } while (contaExistente);    
+      
        
        return numeroDaconta;
    }

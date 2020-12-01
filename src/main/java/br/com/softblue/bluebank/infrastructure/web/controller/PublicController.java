@@ -35,5 +35,7 @@ public class PublicController {
 	return new ResponseEntity<>("Conta Criada com sucesso!", HttpStatus.OK);
 
     }
+    
+    
 
 }

@@ -3,7 +3,7 @@ package br.com.softblue.bluebank.application.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.softblue.bluebank.domain.conta.ContaBancaria;
+import br.com.softblue.bluebank.domain.contaBancaria.ContaBancaria;
 import br.com.softblue.bluebank.domain.usuario.Usuario;
 import br.com.softblue.bluebank.domain.usuario.UsuarioRepository;
 

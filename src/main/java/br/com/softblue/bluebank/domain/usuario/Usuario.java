@@ -14,7 +14,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-import br.com.softblue.bluebank.domain.conta.ContaBancaria;
+import br.com.softblue.bluebank.domain.contaBancaria.ContaBancaria;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.softblue.bluebank.application.service.ContaBancariaService;
 import br.com.softblue.bluebank.application.service.UsuarioService;
-import br.com.softblue.bluebank.domain.conta.ContaBancaria;
+import br.com.softblue.bluebank.domain.contaBancaria.ContaBancaria;
 import br.com.softblue.bluebank.domain.usuario.Usuario;
 
 @RestController
@@ -43,7 +43,7 @@ public class PublicController {
 
     }
     
-    @PutMapping(value = "/deposito/{id}", produces = "application/json")
+    @PutMapping(value = "/deposito", produces = "application/json")
     public ResponseEntity<String> deposito (
 	    @PathVariable(value = "id") Long id, HttpServletRequest request
 	    ) {
@@ -51,6 +51,16 @@ public class PublicController {
 	String numeroDaConta = request.getParameter("numeroDaConta");
 	String tipoDaConta = request.getParameter("tipoDaConta");
 	BigDecimal deposito = new BigDecimal(request.getParameter("deposito"));
+		
+	ContaBancaria contaBD = contaBancariaService.pesquisaPorNumeroETipo(numeroDaConta, tipoDaConta);
+	
+	//TODO: Lançar excessao caso a conta destino não exista
+	
+	BigDecimal saldoAtual = contaBD.getSaldo();
+	
+	contaBD.setSaldo(saldoAtual.add(deposito));
+	
+	contaBancariaService.save(contaBD);
 	
 	return new ResponseEntity<>("Depósito Realizado com sucesso!", HttpStatus.OK);
     }

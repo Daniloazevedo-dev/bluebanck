@@ -1,4 +1,4 @@
-package br.com.softblue.bluebank.domain.conta;
+package br.com.softblue.bluebank.domain.contaBancaria;
 
 import java.math.BigDecimal;
 
@@ -30,9 +30,8 @@ public class ContaBancaria {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TiposDeConta tipo;
+    private String tipo;
     
     @NotEmpty(message = "O número da conta não pode ser vazio!")
     @Column(nullable = false, unique = true)

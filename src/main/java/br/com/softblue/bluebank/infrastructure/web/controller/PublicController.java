@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,9 +43,7 @@ public class PublicController {
     }
     
     @PutMapping(value = "/deposito", produces = "application/json")
-    public ResponseEntity<String> deposito (
-	    @PathVariable(value = "id") Long id, HttpServletRequest request
-	    ) {
+    public ResponseEntity<String> deposito (HttpServletRequest request) {
 	
 	String numeroDaConta = request.getParameter("numeroDaConta");
 	String tipoDaConta = request.getParameter("tipoDaConta");

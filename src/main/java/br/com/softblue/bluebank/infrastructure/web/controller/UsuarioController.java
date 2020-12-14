@@ -55,5 +55,34 @@ public class UsuarioController {
 	
 	return new ResponseEntity<>(saldoAtual, HttpStatus.OK);
     }
+    
+    @PutMapping(value = "/trasferencia", produces = "application/json")
+    public ResponseEntity<String> transferencia(HttpServletRequest request) {
+	
+	String numeroDaContaRemetente = request.getParameter("numeroDaContaRemetente");
+	String tipoDaContaRemetente = request.getParameter("tipoDaContaRemetente");
+	
+	String numeroDaContaDestinatario = request.getParameter("numeroDaContaDestinatario");
+	String tipoDaContaDestinatario = request.getParameter("tipoDaContaDestinatario");
+	
+	BigDecimal valorTransferencia = new BigDecimal(request.getParameter("valorTransferencia"));
+	
+	ContaBancaria contaBDRemetente = contaBancariaService.pesquisaPorNumeroETipo(numeroDaContaRemetente, tipoDaContaRemetente);
+	BigDecimal saldoAtualRemetente = contaBDRemetente.getSaldo();
+	
+	ContaBancaria contaBDDestinatario = contaBancariaService.pesquisaPorNumeroETipo(numeroDaContaDestinatario, tipoDaContaDestinatario);
+	BigDecimal saldoAtualDestinatario = contaBDDestinatario.getSaldo();
+	
+	//TODO: Lançar excessões
+	
+	contaBDRemetente.setSaldo(saldoAtualRemetente.subtract(valorTransferencia));
+	contaBDDestinatario.setSaldo(saldoAtualDestinatario.add(valorTransferencia));
+	
+	contaBancariaService.save(contaBDRemetente);
+	contaBancariaService.save(contaBDDestinatario);
+	
+	return new ResponseEntity<>("Transferência realizada com sucesso!", HttpStatus.OK);
+	
+    }
 
 }

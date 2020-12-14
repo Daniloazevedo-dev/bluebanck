@@ -53,7 +53,7 @@ public class ContaBancariaService {
     public ContaBancaria pesquisaPorNumeroETipo(String numero, String tipo) {
 	return contaBancariaRepository.findByNumeroAndTipo(numero, tipo);
     }
-
+    
     private String gerarNumeroDaConta() {
 
 	String numeroDaconta = null;

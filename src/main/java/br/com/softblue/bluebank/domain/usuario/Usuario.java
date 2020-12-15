@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +15,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import br.com.softblue.bluebank.domain.Extrato.Extrato;
 import br.com.softblue.bluebank.domain.contaBancaria.ContaBancaria;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -47,6 +49,9 @@ public class Usuario {
     @NotEmpty(message = "A senha não pode ser vazio")
     private String senha;
         
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ContaBancaria> contas = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Extrato> extratos = new ArrayList<>();
 }

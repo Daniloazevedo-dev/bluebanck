@@ -1,14 +1,14 @@
-package br.com.softblue.bluebank.domain.contaBancaria;
+package br.com.softblue.bluebank.domain.Extrato;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -21,24 +21,24 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class ContaBancaria {
-    
+public class Extrato {
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @NotNull(message = "A data é obrigatória!")
+    @FutureOrPresent(message = "A data não pode está no passado!")
+    private LocalDate data;
     
-    @Column(nullable = false)
-    private String tipo;
+    @NotEmpty(message = "O nome não pode ser vazio!")
+    private String descricao;
     
-    @NotEmpty(message = "O número da conta não pode ser vazio!")
-    @Column(nullable = false, unique = true)
-    private String numero;
-    
-    @Min(0)
-    private BigDecimal saldo;
+    @NotNull
+    private BigDecimal valor;
     
     @NotNull
     @ManyToOne(optional = false)
     private Usuario usuario;
+    
 }

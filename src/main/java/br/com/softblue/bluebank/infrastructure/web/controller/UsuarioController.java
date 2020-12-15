@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.softblue.bluebank.application.service.ContaBancariaService;
+import br.com.softblue.bluebank.application.service.ExtratoService;
 import br.com.softblue.bluebank.domain.contaBancaria.ContaBancaria;
 
 @RestController
@@ -21,6 +22,9 @@ public class UsuarioController {
     
     @Autowired
     private ContaBancariaService contaBancariaService;
+    
+    @Autowired
+    private ExtratoService extratoService;
     
     @PutMapping(value = "/saque", produces = "applicarion/json")
     public ResponseEntity<String> sacar(HttpServletRequest request) {
@@ -37,6 +41,7 @@ public class UsuarioController {
 	contaBD.setSaldo(saldoAtual.subtract(saque));
 	
 	contaBancariaService.save(contaBD);
+	extratoService.save(contaBD.getUsuario(), "Saque", saque);
 	
 	return new ResponseEntity<>("Saque Realizado com sucesso!", HttpStatus.OK);
     }
@@ -80,6 +85,8 @@ public class UsuarioController {
 	
 	contaBancariaService.save(contaBDRemetente);
 	contaBancariaService.save(contaBDDestinatario);
+	extratoService.save(contaBDRemetente.getUsuario(), "Transfêrencia", valorTransferencia);
+	extratoService.save(contaBDDestinatario.getUsuario(), "Depósito recebido", valorTransferencia);
 	
 	return new ResponseEntity<>("Transferência realizada com sucesso!", HttpStatus.OK);
 	

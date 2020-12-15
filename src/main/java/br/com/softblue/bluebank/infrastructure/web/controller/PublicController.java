@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.softblue.bluebank.application.service.ContaBancariaService;
+import br.com.softblue.bluebank.application.service.ExtratoService;
 import br.com.softblue.bluebank.application.service.UsuarioService;
 import br.com.softblue.bluebank.domain.contaBancaria.ContaBancaria;
 import br.com.softblue.bluebank.domain.usuario.Usuario;
@@ -28,6 +29,9 @@ public class PublicController {
     
     @Autowired
     private ContaBancariaService contaBancariaService;
+    
+    @Autowired
+    private ExtratoService extratoService;
 
     @PostMapping(value = "/nova-conta", produces = "application/json")
     public ResponseEntity<String> novaConta(@RequestBody Usuario usuario) {
@@ -58,6 +62,7 @@ public class PublicController {
 	contaBD.setSaldo(saldoAtual.add(deposito));
 	
 	contaBancariaService.save(contaBD);
+	extratoService.save(contaBD.getUsuario(), "Depósito", deposito);
 	
 	return new ResponseEntity<>("Depósito Realizado com sucesso!", HttpStatus.OK);
     }

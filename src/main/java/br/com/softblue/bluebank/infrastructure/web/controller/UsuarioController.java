@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.softblue.bluebank.application.service.ContaBancariaService;
 import br.com.softblue.bluebank.application.service.ExtratoService;
 import br.com.softblue.bluebank.domain.contaBancaria.ContaBancaria;
+import br.com.softblue.bluebank.domain.contaBancaria.ContaInexistenteException;
 
 @RestController
 @RequestMapping("/usuario")
@@ -26,14 +27,18 @@ public class UsuarioController {
     @Autowired
     private ExtratoService extratoService;
     
-    @PutMapping(value = "/saque", produces = "applicarion/json")
-    public ResponseEntity<String> sacar(HttpServletRequest request) {
+    @PutMapping(value = "/saque", produces = "application/json")
+    public ResponseEntity<String> sacar(HttpServletRequest request) throws ContaInexistenteException {
 	
 	String numeroDaConta = request.getParameter("numeroDaConta");
 	String tipoDaConta = request.getParameter("tipoDaConta");
 	BigDecimal saque = new BigDecimal(request.getParameter("saque"));
 	
 	ContaBancaria contaBD = contaBancariaService.pesquisaPorNumeroETipo(numeroDaConta, tipoDaConta);
+	
+	if(contaBD == null) {
+	    throw new ContaInexistenteException("Conta Inexistente");
+	}
 	
 	//TODO: Lançar excessao caso a conta destino não exista
 	
@@ -47,12 +52,16 @@ public class UsuarioController {
     }
     
     @GetMapping(value = "/saldo", produces = "application/json")
-    public ResponseEntity<BigDecimal> saldo(HttpServletRequest request) {
+    public ResponseEntity<BigDecimal> saldo(HttpServletRequest request) throws ContaInexistenteException {
 	
 	String numeroDaConta = request.getParameter("numeroDaConta");
 	String tipoDaConta = request.getParameter("tipoDaConta");
 	
 	ContaBancaria contaBD = contaBancariaService.pesquisaPorNumeroETipo(numeroDaConta, tipoDaConta);
+	
+	if(contaBD == null) {
+	    throw new ContaInexistenteException("Conta Inexistente");
+	}
 	
 	//TODO: Lançar excessao caso a conta destino não exista
 	
@@ -61,7 +70,7 @@ public class UsuarioController {
 	return new ResponseEntity<>(saldoAtual, HttpStatus.OK);
     }
     
-    @PutMapping(value = "/trasferencia", produces = "application/json")
+    @PutMapping(value = "/transferencia", produces = "application/json")
     public ResponseEntity<String> transferencia(HttpServletRequest request) {
 	
 	String numeroDaContaRemetente = request.getParameter("numeroDaContaRemetente");

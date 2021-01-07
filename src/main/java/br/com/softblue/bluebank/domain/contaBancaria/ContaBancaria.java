@@ -12,6 +12,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.softblue.bluebank.domain.usuario.Usuario;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

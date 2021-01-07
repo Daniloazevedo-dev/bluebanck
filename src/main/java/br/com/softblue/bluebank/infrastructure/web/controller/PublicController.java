@@ -3,11 +3,11 @@ package br.com.softblue.bluebank.infrastructure.web.controller;
 import java.math.BigDecimal;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +18,7 @@ import br.com.softblue.bluebank.application.service.ContaBancariaService;
 import br.com.softblue.bluebank.application.service.ExtratoService;
 import br.com.softblue.bluebank.application.service.UsuarioService;
 import br.com.softblue.bluebank.domain.contaBancaria.ContaBancaria;
+import br.com.softblue.bluebank.domain.contaBancaria.ContaInexistenteException;
 import br.com.softblue.bluebank.domain.usuario.Usuario;
 
 @RestController
@@ -46,25 +47,28 @@ public class PublicController {
 
     }
     
-    @PutMapping(value = "/deposito", produces = "application/json")
-    public ResponseEntity<String> deposito (HttpServletRequest request) {
+    @PutMapping(value = "/deposito/{valor}", produces = "application/json")
+    public ResponseEntity<String> deposito (@RequestBody ContaBancaria contaBancaria, @PathVariable BigDecimal valor) throws ContaInexistenteException {
 	
-	String numeroDaConta = request.getParameter("numeroDaConta");
-	String tipoDaConta = request.getParameter("tipoDaConta");
-	BigDecimal deposito = new BigDecimal(request.getParameter("deposito"));
+	BigDecimal saldoAtual = contaBancaria.getSaldo();
 		
-	ContaBancaria contaBD = contaBancariaService.pesquisaPorNumeroETipo(numeroDaConta, tipoDaConta);
+	contaBancaria.setSaldo(saldoAtual.add(valor));
 	
-	//TODO: Lançar excessao caso a conta destino não exista
-	
-	BigDecimal saldoAtual = contaBD.getSaldo();
-	
-	contaBD.setSaldo(saldoAtual.add(deposito));
-	
-	contaBancariaService.save(contaBD);
-	extratoService.save(contaBD.getUsuario(), "Depósito", deposito);
+	contaBancariaService.save(contaBancaria);
+	extratoService.save(contaBancaria.getUsuario(), "Depósito", valor);
 	
 	return new ResponseEntity<>("Depósito Realizado com sucesso!", HttpStatus.OK);
     }
     
+    @GetMapping(value = "/buscar/{numeroDaConta}/{tipoDaConta}", produces = "application/json")
+    public ResponseEntity<ContaBancaria> buscaContaBancaria(@PathVariable String  numeroDaConta, @PathVariable String tipoDaConta) throws ContaInexistenteException {
+	
+	ContaBancaria contaBD = contaBancariaService.pesquisaPorNumeroETipo(numeroDaConta, tipoDaConta);
+	
+	if(contaBD == null) {
+	    throw new ContaInexistenteException("Conta Inexistente");
+	}
+	
+	return new ResponseEntity<>(contaBD, HttpStatus.OK);
+    }
 }

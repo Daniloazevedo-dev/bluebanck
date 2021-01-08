@@ -100,5 +100,10 @@ public class UsuarioController {
 	return new ResponseEntity<>("Transferência realizada com sucesso!", HttpStatus.OK);
 	
     }
+    
+    @GetMapping(value = "/teste", produces = "application/json")
+    public void teste() {
+	System.out.println("Teste");
+    }
 
 }

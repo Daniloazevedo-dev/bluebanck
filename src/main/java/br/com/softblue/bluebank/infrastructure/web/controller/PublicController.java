@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +38,9 @@ public class PublicController {
 
     @PostMapping(value = "/nova-conta", produces = "application/json")
     public ResponseEntity<String> novaConta(@RequestBody Usuario usuario) {
+	
+	PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	usuario.setSenha(encoder.encode(usuario.getSenha()));
 	
 	List<ContaBancaria> ContasBancarias = contaBancariaService.novaConta(usuario);
 	

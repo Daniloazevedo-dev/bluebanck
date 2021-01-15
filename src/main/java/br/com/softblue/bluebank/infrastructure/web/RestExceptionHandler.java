@@ -14,6 +14,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import br.com.softblue.bluebank.domain.contaBancaria.ContaInexistenteException;
+import br.com.softblue.bluebank.domain.contaBancaria.SaldoInsufucienteException;
+import br.com.softblue.bluebank.domain.contaBancaria.ValorNegativoException;
 
 @RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -40,7 +42,19 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public RestResponseError handlerException(ContaInexistenteException e) {
+    public RestResponseError handlerContaInexistenteException(ContaInexistenteException e) {
+	return RestResponseError.fromMEssage(e.getMessage());
+    }
+    
+    @ExceptionHandler
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public RestResponseError handlerValorNEgativoException(ValorNegativoException e) {
+	return RestResponseError.fromMEssage(e.getMessage());
+    }
+    
+    @ExceptionHandler
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public RestResponseError handlerSaldoInsuficienteValorNEgativoException(SaldoInsufucienteException e) {
 	return RestResponseError.fromMEssage(e.getMessage());
     }
 

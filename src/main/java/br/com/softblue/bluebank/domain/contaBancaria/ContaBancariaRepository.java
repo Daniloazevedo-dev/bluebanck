@@ -11,7 +11,7 @@ public interface ContaBancariaRepository extends CrudRepository<ContaBancaria, L
 
     public ContaBancaria findByNumero(String numero);
     
-   @Query("SELECT c FROM ContaBancaria c WHERE c.numero = ?1 AND c.tipo = ?2")
-    public ContaBancaria findByNumeroAndTipo(String numero, String tipo);
+   @Query("SELECT c FROM ContaBancaria c WHERE c.tipo = ?1 AND c.numero = ?2")
+    public ContaBancaria findByNumeroAndTipo(String tipo, String numero);
 
 }

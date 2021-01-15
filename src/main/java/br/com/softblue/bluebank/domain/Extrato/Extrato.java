@@ -34,6 +34,9 @@ public class Extrato {
     @NotEmpty(message = "O nome não pode ser vazio!")
     private String descricao;
     
+    @NotEmpty(message = "O Tipo da Conta não pode ser vazio!")
+    private String tipoDaConta;
+    
     @NotNull
     private BigDecimal valor;
     

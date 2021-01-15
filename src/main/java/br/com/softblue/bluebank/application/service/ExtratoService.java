@@ -16,12 +16,13 @@ public class ExtratoService {
     @Autowired
     private ExtratoRepository extratoRepository;
     
-    public void save(Usuario usuario, String descricao, BigDecimal valor) {
+    public void save(Usuario usuario, String descricao, BigDecimal valor, String tipoDaConta) {
 	
 	Extrato extrato = new Extrato();
 	extrato.setData(LocalDate.now());
 	extrato.setDescricao(descricao);
 	extrato.setValor(valor);
+	extrato.setTipoDaConta(tipoDaConta);
 	extrato.setUsuario(usuario);
 	usuario.getExtratos().add(extrato);
 	

@@ -50,8 +50,8 @@ public class ContaBancariaService {
 	return contaBancariaRepository.findByNumero(numero);
     }
     
-    public ContaBancaria pesquisaPorNumeroETipo(String numero, String tipo) {
-	return contaBancariaRepository.findByNumeroAndTipo(numero, tipo);
+    public ContaBancaria pesquisaPorNumeroETipo(String tipo, String numero) {
+	return contaBancariaRepository.findByNumeroAndTipo(tipo, numero);
     }
     
     private String gerarNumeroDaConta() {

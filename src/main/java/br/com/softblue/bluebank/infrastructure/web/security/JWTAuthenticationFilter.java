@@ -51,7 +51,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	    Authentication authResult) throws IOException, ServletException {
 	
 	UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authResult.getPrincipal();
-
+	
 	String jwtToken = Jwts.builder().setSubject(userDetailsImpl.getUsername())
 		.setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
 		.claim("displayName", userDetailsImpl.getDisplayname())

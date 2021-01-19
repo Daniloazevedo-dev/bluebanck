@@ -59,5 +59,4 @@ public class UserDetailsImpl implements UserDetails {
     public String getDisplayname() {
 	return displayname;
     }
-
 }

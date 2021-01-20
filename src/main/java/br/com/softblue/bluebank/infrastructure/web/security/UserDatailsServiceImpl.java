@@ -6,28 +6,28 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import br.com.softblue.bluebank.domain.contaBancaria.ContaBancaria;
-import br.com.softblue.bluebank.domain.contaBancaria.ContaBancariaRepository;
+import br.com.softblue.bluebank.domain.usuario.Usuario;
+import br.com.softblue.bluebank.domain.usuario.UsuarioRepository;
 
 @Service
 public class UserDatailsServiceImpl implements UserDetailsService {
     
-    private ContaBancariaRepository contaBancariaRepository;
+    private UsuarioRepository usuarioRepository;
     
     @Autowired
-    public UserDatailsServiceImpl(ContaBancariaRepository contaBancariaRepository) {
-	this.contaBancariaRepository = contaBancariaRepository;
+    public UserDatailsServiceImpl(UsuarioRepository usuarioRepository) {
+	this.usuarioRepository = usuarioRepository;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String numeroDaConta) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 	
-	ContaBancaria contaBancaria = contaBancariaRepository.findByNumero(numeroDaConta);
+	Usuario usuario = usuarioRepository.findByEmail(email);
 	
-	if(contaBancaria == null) {
-	    throw new UsernameNotFoundException(numeroDaConta);
+	if(usuario == null) {
+	    throw new UsernameNotFoundException(email);
 	}
 	
-	return new UserDetailsImpl(contaBancaria);
+	return new UserDetailsImpl(usuario);
     }
 }

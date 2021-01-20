@@ -6,19 +6,19 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import br.com.softblue.bluebank.domain.contaBancaria.ContaBancaria;
+import br.com.softblue.bluebank.domain.usuario.Usuario;
 
 @SuppressWarnings("serial")
 public class UserDetailsImpl implements UserDetails {
     
-    private String numeroDaConta;
+    private String email;
     private String senha;
     private String displayname;
     
-    public UserDetailsImpl(ContaBancaria contaBancaria) {
-	this.numeroDaConta = contaBancaria.getNumero();
-	this.senha = contaBancaria.getUsuario().getSenha();
-	this.displayname = contaBancaria.getUsuario().getTitular();
+    public UserDetailsImpl(Usuario usuario) {
+	this.email = usuario.getEmail();
+	this.senha = usuario.getSenha();
+	this.displayname = usuario.getTitular();
     }
 
     @Override
@@ -33,7 +33,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-	return numeroDaConta;
+	return email;
     }
 
     @Override

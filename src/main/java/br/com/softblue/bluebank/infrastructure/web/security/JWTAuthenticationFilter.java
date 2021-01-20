@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.softblue.bluebank.domain.contaBancaria.ContaBancaria;
+import br.com.softblue.bluebank.domain.usuario.Usuario;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -34,10 +34,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 	try {
 	    ObjectMapper mapper = new ObjectMapper();
-	    ContaBancaria contaBancaria = mapper.readValue(request.getInputStream(), ContaBancaria.class);
+	    Usuario usuario = mapper.readValue(request.getInputStream(), Usuario.class);
 
 	    UsernamePasswordAuthenticationToken upat = new UsernamePasswordAuthenticationToken(
-		    contaBancaria.getNumero(), contaBancaria.getUsuario().getSenha());
+		    usuario.getEmail(), usuario.getSenha());
 	    
 	    return authenticationManager.authenticate(upat);
 

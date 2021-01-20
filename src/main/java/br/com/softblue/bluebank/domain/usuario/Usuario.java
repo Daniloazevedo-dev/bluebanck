@@ -15,8 +15,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import br.com.softblue.bluebank.domain.Extrato.Extrato;
 import br.com.softblue.bluebank.domain.contaBancaria.ContaBancaria;
 import lombok.EqualsAndHashCode;
@@ -51,7 +49,6 @@ public class Usuario {
     @NotEmpty(message = "A senha não pode ser vazio")
     private String senha;
      
-    @JsonIgnore
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ContaBancaria> contas = new ArrayList<>();
     

@@ -15,6 +15,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import br.com.softblue.bluebank.domain.Extrato.Extrato;
 import br.com.softblue.bluebank.domain.contaBancaria.ContaBancaria;
 import lombok.EqualsAndHashCode;
@@ -49,7 +52,8 @@ public class Usuario {
     @NotEmpty(message = "A senha não pode ser vazio")
     private String senha;
      
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<ContaBancaria> contas = new ArrayList<>();
     
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)

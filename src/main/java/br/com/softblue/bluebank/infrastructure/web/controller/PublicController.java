@@ -47,8 +47,9 @@ public class PublicController {
 
 	for (ContaBancaria novaConta : ContasBancarias) {
 	    usuarioService.saveUsuario(usuario, novaConta);
+	    extratoService.save(usuario, "Conta Criada", novaConta.getSaldo(), novaConta.getTipo());
 	}
-
+	
 	return new ResponseEntity<>("Conta Criada com sucesso!", HttpStatus.OK);
 
     }

@@ -2,6 +2,7 @@ package br.com.softblue.bluebank.application.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,4 +30,12 @@ public class ExtratoService {
 	extratoRepository.save(extrato);
     }
 
+    public List<Extrato> pesquisaExtratoPorData(Long usuarioId, LocalDate dataInicial, LocalDate dataFinal) {
+	
+	List<Extrato> extratos = extratoRepository.findByDateInterval(usuarioId, dataInicial, dataFinal);
+	
+	return extratos;
+	
+    }
+    
 }

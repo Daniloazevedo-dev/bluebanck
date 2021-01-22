@@ -1,6 +1,8 @@
 package br.com.softblue.bluebank.infrastructure.web.controller;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,15 +10,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.softblue.bluebank.application.service.ContaBancariaService;
+import br.com.softblue.bluebank.application.service.DataInicialException;
 import br.com.softblue.bluebank.application.service.ExtratoService;
+import br.com.softblue.bluebank.application.service.UsuarioService;
+import br.com.softblue.bluebank.domain.Extrato.Extrato;
 import br.com.softblue.bluebank.domain.contaBancaria.ContaBancaria;
 import br.com.softblue.bluebank.domain.contaBancaria.ContaInexistenteException;
 import br.com.softblue.bluebank.domain.contaBancaria.SaldoInsufucienteException;
 import br.com.softblue.bluebank.domain.contaBancaria.ValorNegativoException;
+import br.com.softblue.bluebank.domain.search.Search;
+import br.com.softblue.bluebank.domain.usuario.Usuario;
+import br.com.softblue.bluebank.infrastructure.web.security.SecurityUtils;
 
 @RestController
 @RequestMapping("/usuario")
@@ -27,6 +36,9 @@ public class UsuarioController {
 
     @Autowired
     private ExtratoService extratoService;
+    
+    @Autowired
+    private UsuarioService usuarioService;
 
     @PutMapping(value = "/saque/{tipoDaConta}/{numeroDaConta}/{valor}", produces = "application/json")
     public ResponseEntity<String> sacar(@PathVariable String tipoDaConta, @PathVariable String numeroDaConta,
@@ -119,5 +131,27 @@ public class UsuarioController {
 
 	return new ResponseEntity<>("Transferência realizada com sucesso!", HttpStatus.OK);
 
+    }
+    
+    @GetMapping(value = "/extrato/search", produces = "application/json")
+    public List<Extrato> buscarExtratos(@RequestBody Search search) throws DataInicialException {
+	
+	
+	if(search.getDataInicial() == null) {
+		throw new DataInicialException("Insira uma data Inicial");
+	}
+	
+	if(search.getDataFinal() == null) {
+	    search.setDataFinal(LocalDate.now());
+	}
+	
+	String emailUsuario = SecurityUtils.userDetailsImpl();
+	
+	Usuario usuario = usuarioService.buscarUsuarioPorEmail(emailUsuario);
+	
+	List<Extrato> extratos = extratoService.pesquisaExtratoPorData(usuario.getId(), search.getDataInicial(), search.getDataFinal());
+	
+	return extratos;
+	
     }
 }

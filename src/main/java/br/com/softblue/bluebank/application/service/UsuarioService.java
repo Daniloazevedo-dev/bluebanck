@@ -18,6 +18,11 @@ public class UsuarioService {
 	usuario.getContas().add(conta);
 	usuarioRepository.save(usuario);
     }
+
+    public Usuario buscarUsuarioPorEmail(String email) {
+	
+	return usuarioRepository.findByEmail(email);
+    }
     
     
 }

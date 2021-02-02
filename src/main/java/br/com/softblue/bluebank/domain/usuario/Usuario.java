@@ -34,7 +34,7 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @NotEmpty(message = "O titular não pode ser vazio.")
+    @NotEmpty(message = "O titular não pode ser vazio")
     @Size(max = 80, message = "O nome é muito grande.")
     @Column(nullable = false, unique = true)
     private String titular;

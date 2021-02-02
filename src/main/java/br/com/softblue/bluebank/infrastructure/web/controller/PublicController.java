@@ -3,6 +3,8 @@ package br.com.softblue.bluebank.infrastructure.web.controller;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,14 +40,14 @@ public class PublicController {
     private ExtratoService extratoService;
 
     @PostMapping(value = "/nova-conta", produces = "application/json")
-    public ResponseEntity<String> novaConta(@RequestBody Usuario usuario) {
+    public ResponseEntity<String> novaConta(@RequestBody @Valid Usuario usuario) {
 
 	PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	usuario.setSenha(encoder.encode(usuario.getSenha()));
 
-	List<ContaBancaria> ContasBancarias = contaBancariaService.novaConta(usuario);
+	List<ContaBancaria> contasBancarias = contaBancariaService.novaConta(usuario);
 
-	for (ContaBancaria novaConta : ContasBancarias) {
+	for (ContaBancaria novaConta : contasBancarias) {
 	    usuarioService.saveUsuario(usuario, novaConta);
 	    extratoService.save(usuario, "Conta Criada", novaConta.getSaldo(), novaConta.getTipo());
 	}

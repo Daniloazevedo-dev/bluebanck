@@ -1,7 +1,10 @@
 package br.com.softblue.bluebank.infrastructure.web;
 
-import org.springframework.validation.Errors;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 public class RestResponseError {
 
@@ -15,12 +18,12 @@ public class RestResponseError {
 	return error;
     }
     
-    public static RestResponseError fromValidationError(Errors errors) {
+    public static RestResponseError fromValidationError(List<ObjectError> errors) {
 	
 	RestResponseError resp = new RestResponseError();
 	StringBuilder sb = new StringBuilder();
 	
-	for(ObjectError error : errors.getAllErrors()) {
+	for(ObjectError error : errors) {
 	    sb.append(error.getDefaultMessage()).append(". ");
 	}
 	
@@ -34,6 +37,11 @@ public class RestResponseError {
 	resp.error = message;
 	
 	return resp;
-}
+    }
     
+    public static List<ObjectError> getErrorsValidation(MethodArgumentNotValidException ex) {
+	return ex.getBindingResult().getFieldErrors().stream()
+		.map(error -> new ObjectError(error.getField(), error.getDefaultMessage()))
+		.collect(Collectors.toList());
+    }
 }

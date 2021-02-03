@@ -24,5 +24,13 @@ public class UsuarioService {
 	return usuarioRepository.findByEmail(email);
     }
     
+    public Usuario buscarUsuarioPorCpf(String cpf) {
+	
+  	return usuarioRepository.findByCpf(cpf);
+      }
     
+    public Usuario buscarUsuarioPorTitular(String titular) {
+	
+  	return usuarioRepository.findByTitular(titular);
+      }
 }

@@ -1,4 +1,4 @@
-package br.com.softblue.bluebank.domain.Extrato;
+package br.com.softblue.bluebank.domain.extrato;
 
 import java.time.LocalDate;
 import java.util.List;

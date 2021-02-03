@@ -7,8 +7,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.softblue.bluebank.domain.Extrato.Extrato;
-import br.com.softblue.bluebank.domain.Extrato.ExtratoRepository;
+import br.com.softblue.bluebank.domain.extrato.Extrato;
+import br.com.softblue.bluebank.domain.extrato.ExtratoRepository;
 import br.com.softblue.bluebank.domain.usuario.Usuario;
 
 @Service

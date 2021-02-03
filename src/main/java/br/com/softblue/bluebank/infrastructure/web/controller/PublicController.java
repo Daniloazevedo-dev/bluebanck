@@ -24,12 +24,14 @@ import br.com.softblue.bluebank.application.service.UsuarioService;
 import br.com.softblue.bluebank.domain.contaBancaria.ContaBancaria;
 import br.com.softblue.bluebank.domain.contaBancaria.ContaInexistenteException;
 import br.com.softblue.bluebank.domain.contaBancaria.ValorNegativoException;
+import br.com.softblue.bluebank.domain.usuario.CpfExistenteException;
+import br.com.softblue.bluebank.domain.usuario.EmailExistenteException;
+import br.com.softblue.bluebank.domain.usuario.TitularExistenteException;
 import br.com.softblue.bluebank.domain.usuario.Usuario;
 
 @RestController
 @RequestMapping("/public")
 public class PublicController {
-
     @Autowired
     private UsuarioService usuarioService;
 
@@ -40,7 +42,19 @@ public class PublicController {
     private ExtratoService extratoService;
 
     @PostMapping(value = "/nova-conta", produces = "application/json")
-    public ResponseEntity<String> novaConta(@RequestBody @Valid Usuario usuario) {
+    public ResponseEntity<String> novaConta(@RequestBody @Valid Usuario usuario) throws TitularExistenteException, EmailExistenteException, CpfExistenteException {
+	
+	if(usuarioService.buscarUsuarioPorTitular(usuario.getTitular()) != null) {
+	    throw new TitularExistenteException("Já existe um usuário com esse nome.");
+	}
+	
+	if(usuarioService.buscarUsuarioPorEmail(usuario.getEmail()) != null) {
+	    throw new EmailExistenteException("Já existe um usuário com este email cadastrado.");
+	}
+	
+	if(usuarioService.buscarUsuarioPorCpf(usuario.getCpf()) != null) {
+	    throw new CpfExistenteException("Já existe um usuário com este cpf.");
+	}
 
 	PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	usuario.setSenha(encoder.encode(usuario.getSenha()));
@@ -49,7 +63,6 @@ public class PublicController {
 
 	for (ContaBancaria novaConta : contasBancarias) {
 	    usuarioService.saveUsuario(usuario, novaConta);
-	    extratoService.save(usuario, "Conta Criada", novaConta.getSaldo(), novaConta.getTipo());
 	}
 	
 	return new ResponseEntity<>("Conta Criada com sucesso!", HttpStatus.OK);

@@ -18,8 +18,8 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
-import br.com.softblue.bluebank.domain.Extrato.Extrato;
 import br.com.softblue.bluebank.domain.contaBancaria.ContaBancaria;
+import br.com.softblue.bluebank.domain.extrato.Extrato;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,17 +36,17 @@ public class Usuario {
     
     @NotEmpty(message = "O titular não pode ser vazio")
     @Size(max = 80, message = "O nome é muito grande.")
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String titular;
     
     @NotEmpty(message = "O email não pode ser vazio")
     @Size(max = 60, message = "O e-mail é muito grande")
     @Email(message = "O e-mail é inválido")
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false)
     private String email;
     
     @NotEmpty(message = "O CPF não pode ser vazio") 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String cpf;
     
     @NotEmpty(message = "A senha não pode ser vazio")

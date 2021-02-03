@@ -16,6 +16,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import br.com.softblue.bluebank.domain.contaBancaria.ContaInexistenteException;
 import br.com.softblue.bluebank.domain.contaBancaria.SaldoInsufucienteException;
 import br.com.softblue.bluebank.domain.contaBancaria.ValorNegativoException;
+import br.com.softblue.bluebank.domain.usuario.CpfExistenteException;
+import br.com.softblue.bluebank.domain.usuario.EmailExistenteException;
+import br.com.softblue.bluebank.domain.usuario.TitularExistenteException;
 
 @RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -44,6 +47,24 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public RestResponseError handlerSaldoInsuficienteValorNEgativoException(SaldoInsufucienteException e) {
+	return RestResponseError.fromMEssage(e.getMessage());
+    }
+    
+    @ExceptionHandler
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public RestResponseError handlerTitularExistenteException(TitularExistenteException e) {
+	return RestResponseError.fromMEssage(e.getMessage());
+    }
+    
+    @ExceptionHandler
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public RestResponseError handlerEmailExistenteException(EmailExistenteException e) {
+	return RestResponseError.fromMEssage(e.getMessage());
+    }
+    
+    @ExceptionHandler
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public RestResponseError handlerCpfExistenteException(CpfExistenteException e) {
 	return RestResponseError.fromMEssage(e.getMessage());
     }
 }

@@ -33,4 +33,8 @@ public class UsuarioService {
 	
   	return usuarioRepository.findByTitular(titular);
       }
+    
+    public void atualizarSenha(String senha, Long idUsuario) {
+	usuarioRepository.updateSenha(senha, idUsuario);
+    }
 }

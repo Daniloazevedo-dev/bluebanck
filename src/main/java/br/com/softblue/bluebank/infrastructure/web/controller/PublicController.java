@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.softblue.bluebank.application.service.ContaBancariaService;
+import br.com.softblue.bluebank.application.service.EnviaEmailService;
 import br.com.softblue.bluebank.application.service.ExtratoService;
 import br.com.softblue.bluebank.application.service.UsuarioService;
+import br.com.softblue.bluebank.application.util.GerarNumero;
 import br.com.softblue.bluebank.domain.contaBancaria.ContaBancaria;
 import br.com.softblue.bluebank.domain.contaBancaria.ContaInexistenteException;
 import br.com.softblue.bluebank.domain.contaBancaria.ValorNegativoException;
@@ -32,6 +34,7 @@ import br.com.softblue.bluebank.domain.usuario.Usuario;
 @RestController
 @RequestMapping("/public")
 public class PublicController {
+    
     @Autowired
     private UsuarioService usuarioService;
 
@@ -40,6 +43,9 @@ public class PublicController {
 
     @Autowired
     private ExtratoService extratoService;
+    
+    @Autowired
+    private EnviaEmailService enviaEmailService;
 
     @PostMapping(value = "/nova-conta", produces = "application/json")
     public ResponseEntity<String> novaConta(@RequestBody @Valid Usuario usuario) throws TitularExistenteException, EmailExistenteException, CpfExistenteException {
@@ -108,4 +114,25 @@ public class PublicController {
 
 	return new ResponseEntity<>(contaBD, HttpStatus.OK);
     }
+    
+    @PostMapping(value = "/recuperar/{email}", produces = "application/json")
+    public ResponseEntity<String> recuperar(@PathVariable String email) throws Exception {
+	
+	Usuario usuarioBD = usuarioService.buscarUsuarioPorEmail(email);
+	
+	if(usuarioService.buscarUsuarioPorEmail(email) == null) {
+	    throw new EmailExistenteException("Email não cadastrado.");
+	}
+	
+	String novaSenha = GerarNumero.gerar();
+	
+	PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	usuarioService.atualizarSenha(encoder.encode(novaSenha), usuarioBD.getId());
+	
+	enviaEmailService.enviarEmail("Recuperação de senha", email, "Sua nova senha é: " + novaSenha);
+	
+	return new ResponseEntity<>("Senha enviada para o seu email.", HttpStatus.OK); 
+	
+    }
+    
 }

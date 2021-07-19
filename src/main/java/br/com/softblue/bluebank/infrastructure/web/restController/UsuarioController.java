@@ -1,4 +1,4 @@
-package br.com.softblue.bluebank.infrastructure.web.controller;
+package br.com.softblue.bluebank.infrastructure.web.restController;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

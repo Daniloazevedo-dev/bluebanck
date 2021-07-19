@@ -24,7 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 		.httpBasic()
 	.and()
 		.authorizeRequests()
-			.antMatchers("/public/**").permitAll()
+			.antMatchers("/public/**","/_imagens/**").permitAll()
 			.anyRequest().authenticated()
 	.and()
 		.addFilter(new JWTAuthenticationFilter(authenticationManager()))

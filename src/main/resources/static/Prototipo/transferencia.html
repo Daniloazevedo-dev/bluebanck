@@ -1,0 +1,178 @@
+<html>
+   <head>
+        <meta charset="UTF-8" />
+        <title>BlueBank</title>
+        <link rel="shortcut icon" href="/_imagens/favicon.png"/>
+        <link rel="stylesheet" href="_css/style.css" />
+        <script src="_js/validator.js" type="text/javascript"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+       
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+        
+        <script src="_js/mask.js" type="text/javascript"></script>
+        <script src="_js/validateModalTransferencia.js" type="text/javascript"></script>
+    </head>
+    <body>
+            <nav class="navbar navbar-expand-md navbar-light bg-light">
+                <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="home.html">HOME</a>
+                        </li>                  
+
+                         <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              SERVIÇOS
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                              <a class="dropdown-item" href="transferencia.html">Transferêcia</a>
+
+                              <a class="dropdown-item" href="extrato.html">Extrato</a>
+                            </div>
+
+                            <li class="nav-item">
+                                 <a class="nav-link" href="#">SAIR</a>
+                            </li>
+                    </ul>
+                </div>
+                <div class="mx-auto order-0">
+                    <a class="navbar-brand mx-auto" href="home.html"><img src="_imagens/logo.png" height="100" class="d-inline-block align-top " alt="Logo do sistema"></a>
+                    <button class="navbar-toggler float-right mt-5" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+            
+                <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Olá Danilo, Bom dia!</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>   
+    
+            
+            <p class="h4 text-center mt-4">Área de Transferência</p>
+        
+        <div class="container">
+            
+              <div class="card mt-4">
+                  <div class="card-header text-center">
+                    Origem
+                  </div>
+                  <div class="card-body ">
+                    <div class="form-group col-md-8 offset-md-2">
+                        <div class="custom-control custom-radio">
+                            <span><strong>Conta Selecionada:</strong> Poupança</span>                            
+                        </div>
+                    
+                        <div class="custom-control custom-radio">
+                            <span><strong >Número:</strong> 5555-5</span>
+                        </div>
+                        
+                        <div class="custom-control custom-radio">
+                            <span ><strong>Saldo:</strong><strong class="text-success" > R$ 500,00</strong></span>
+                        </div>
+                        
+                    </div>                      
+                </div>
+            </div>
+            
+                <div class="card mt-4">
+                    <div class="card-header text-center">
+                        Destino:
+                    </div>
+                      <div class="card-body ">
+                          
+                          <form method="" action="" class="validator" id="formVerificaContaDestino" novalidate>
+                          
+                              <div class="form-group col-md-8 offset-md-2">
+                                <label for="numeroDaContaDestino">Número da conta:</label>
+                                <input class="form-control" type="text" id="numeroDaContaDestino" name="numeroDaContaDestino" placeholder="Informe o número da conta do destinatário!" required/>
+                                 <div class="invalid-feedback">
+                                    <p>O número da conta do destinatário é obrigatório!</p>
+                                </div>
+                              </div>
+
+                              <div class="form-group col-md-8 offset-md-2 border p-2">
+                                    <span> Tipo da conta:</span>
+                                    <div class="custom-control custom-radio mt-1 ">
+                                      <input type="radio" class="custom-control-input" id="contaPoupanca" name="conta" required>
+                                      <label class="custom-control-label" for="contaPoupanca">Conta Poupança</label>
+                                    </div>
+
+                                    <div class="custom-control custom-radio">
+                                      <input type="radio" class="custom-control-input" id="contaCorrente" name="conta" required>
+                                      <label class="custom-control-label" for="contaCorrente">Conta Corrente</label>
+                                        <div class="invalid-feedback">
+                                          <p>É Obrigatório selecionar o tipo da conta!</p>
+                                        </div>
+                                    </div>
+
+                              </div>
+                              <div class="form-group text-center">
+                                <input class="btn btn-primary" id="buttonVerificarContaDestino" type="submit" value="Verificar conta"  />
+                              </div>
+
+                          </form>
+                          
+                          <div class="form-group col-md-8 offset-md-2">
+                            <label for="valorTransferencia">Informe o valor a ser transferido:</label>
+                            <input class="form-control" type="text" id="valorTransferencia" name="valorTransferencia" placeholder="Ex: R$ 0,00" required/>
+                            <div class="invalid-feedback">
+                                <p>É Obrigatório informar o valor a ser creditado!</p>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+                <div class="form-group text-center mt-4">
+                    <a  href="home.html"> <input class="btn btn-primary" type="button" value="voltar" /></a>
+                    <a  href="home.html"><input class="btn btn-primary" type="submit" value="Transferir" id="valorTransferencia" name="valorTransferencia"/></a>
+                </div>
+            
+            <!-- Modal -->
+                <div class="modal fade" id="ModalDadosDestinatario" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true" data-backdrop="static">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="TituloModalCentralizado">Dados destinatário:</h5>
+                      </div>
+                      <div class="modal-body">
+                         <div class="form-group">
+                             
+                              <div class="custom-control custom-radio">
+                                <span><strong >Número: </strong>7777-7</span>
+                            </div>
+                             
+                            <div class="custom-control custom-radio">
+                                <span><strong>Tipo da Conta:</strong> Poupança</span>                            
+                            </div>
+
+                            <div class="custom-control custom-radio">
+                                <span><strong>Titular: </strong>Jaqueline Maria dos santos</span>
+                            </div>
+                        
+                        </div> 
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-Warning" data-dismiss="modal">Corrigir</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Confirmar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            
+        </div>
+        
+    <div class="navbar fixed-bottom footer-light bg-dark d-flex justify-content-center" href="#">
+            <span class="text-muted" >Copyright © 2020 | Danilo Azevedo | Projeto realizado para estudos | Instituição: <a  class="text-info" href="https://www.softblue.com.br/">Softblue</a></span>
+    </div> 
+        
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </body>
+</html>  
+            

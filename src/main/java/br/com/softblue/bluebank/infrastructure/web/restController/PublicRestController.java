@@ -33,7 +33,7 @@ import br.com.softblue.bluebank.domain.usuario.Usuario;
 
 @RestController
 @RequestMapping("/public")
-public class PublicController {
+public class PublicRestController {
     
     @Autowired
     private UsuarioService usuarioService;
@@ -105,10 +105,14 @@ public class PublicController {
     @GetMapping(value = "/buscar/{tipoDaConta}/{numeroDaConta}", produces = "application/json")
     public ResponseEntity<ContaBancaria> buscaContaBancaria(@PathVariable String tipoDaConta,
 	    @PathVariable String numeroDaConta) throws ContaInexistenteException {
-
+    	
 	ContaBancaria contaBD = contaBancariaService.pesquisaPorNumeroETipo(tipoDaConta, numeroDaConta);
+	
+	ContaBancaria conta = new ContaBancaria();
+	conta.setNumero("454646");
+	System.out.println(conta.getNumero());
 
-	if (contaBD == null) {
+	if (contaBD == null ) {
 	    throw new ContaInexistenteException("Conta Inexistente");
 	}
 

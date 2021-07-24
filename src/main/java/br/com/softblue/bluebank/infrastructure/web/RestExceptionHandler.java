@@ -67,4 +67,5 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public RestResponseError handlerCpfExistenteException(CpfExistenteException e) {
 	return RestResponseError.fromMEssage(e.getMessage());
     }
+    
 }

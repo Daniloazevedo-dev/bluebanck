@@ -44,4 +44,5 @@ public class ContaBancaria {
     @NotNull
     @ManyToOne(optional = false)
     private Usuario usuario;
+    
 }

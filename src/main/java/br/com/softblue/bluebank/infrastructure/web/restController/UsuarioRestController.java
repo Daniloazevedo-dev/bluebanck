@@ -29,7 +29,7 @@ import br.com.softblue.bluebank.infrastructure.web.security.SecurityUtils;
 
 @RestController
 @RequestMapping("/usuario")
-public class UsuarioController {
+public class UsuarioRestController {
 
     @Autowired
     private ContaBancariaService contaBancariaService;

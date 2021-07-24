@@ -17,5 +17,9 @@ public class IndexController {
 	public String senhaRecuperacao() {
 		return "senha-recuperacao";
 	}
-
+	
+	@GetMapping("/nova-conta")
+	public String novaConta() {
+		return "nova-conta";
+	}
 }

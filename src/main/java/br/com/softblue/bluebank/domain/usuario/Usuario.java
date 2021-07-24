@@ -54,7 +54,7 @@ public class Usuario {
      
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private List<ContaBancaria> contas = new ArrayList<>();
+    private List<ContaBancaria> contas = new ArrayList<>(); 
     
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Extrato> extratos = new ArrayList<>();

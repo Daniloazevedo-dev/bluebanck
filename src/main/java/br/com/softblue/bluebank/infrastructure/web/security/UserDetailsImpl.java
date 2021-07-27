@@ -17,12 +17,14 @@ public class UserDetailsImpl implements UserDetails {
     private String email;
     private String senha;
     private String displayname;
+    private String cpf;
     private List<ContaBancaria> contasBancarias = new ArrayList<>();
     
     public UserDetailsImpl(Usuario usuario) {
 	this.email = usuario.getEmail();
 	this.senha = usuario.getSenha();
 	this.displayname = usuario.getTitular();
+	this.cpf = usuario.getCpf();
 	this.contasBancarias = usuario.getContas();
     }
 
@@ -64,6 +66,10 @@ public class UserDetailsImpl implements UserDetails {
     public String getDisplayname() {
 	return displayname;
     }
+    
+    public String getCpf() {
+		return cpf;
+	}
 
     public List<ContaBancaria> getContasBancarias() {
 	return contasBancarias;

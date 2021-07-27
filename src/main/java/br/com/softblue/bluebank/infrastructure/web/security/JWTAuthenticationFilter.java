@@ -55,6 +55,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	String jwtToken = Jwts.builder().setSubject(userDetailsImpl.getUsername())
 		.setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
 		.claim("displayName", userDetailsImpl.getDisplayname())
+		.claim("cpf", userDetailsImpl.getCpf())
 		.claim("contasBancarias", userDetailsImpl.getContasBancarias())
 		.signWith(SignatureAlgorithm.HS512, SecurityConstants.SECRET_KEY)
 		.compact();

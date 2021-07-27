@@ -13,31 +13,31 @@ function login(form) {
 			"senha": senha
 		};
 
-		requestAjax(data, url);
+		requestLogin(data, url);
 	}
 
-	function requestAjax(data, url) {
+	function requestLogin(data, url) {
 		$.ajax({
 			type: "POST",
 			url: url,
 			data: JSON.stringify(data),
-			async: false
+			async: true
 
 		}).then(sucesso, falha);
 
 		function sucesso(data, textStatus, request) {
-
-			var token = request.getResponseHeader('Authorization');
-
-			if (token) {
-				localStorage.setItem('token', token);
-			}
-
-
+			let token = request.getResponseHeader("Authorization");
+			storeCredentials(token);
 		}
 
 		function falha() {
 			alert("E-mail ou senha incorreto.");
+		}
+
+		function storeCredentials(token) {
+			const tokenData = JSON.parse(atob(token.split(".")[1]));
+			const credentials = { email: tokenData.sub, displayName: tokenData.displayName, token: token };
+			localStorage.setItem("credentials", JSON.stringify(credentials));
 		}
 	}
 

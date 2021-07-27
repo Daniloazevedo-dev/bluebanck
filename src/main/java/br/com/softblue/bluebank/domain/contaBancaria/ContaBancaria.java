@@ -40,6 +40,8 @@ public class ContaBancaria {
     @Min(0)
     private BigDecimal saldo;
     
+    private Boolean ativo;
+    
     @JsonIgnore
     @NotNull
     @ManyToOne(optional = false)

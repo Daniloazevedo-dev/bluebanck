@@ -36,8 +36,8 @@ function login(form) {
 
 		function storeCredentials(token) {
 			const tokenData = JSON.parse(atob(token.split(".")[1]));
-			const credentials = { email: tokenData.sub, displayName: tokenData.displayName, cpf: tokenData.cpf, token: token };
-			localStorage.setItem("credentials", JSON.stringify(credentials));
+			const credenciais = { contasBancarias: tokenData.contasBancarias, email: tokenData.sub, displayName: tokenData.displayName, cpf: tokenData.cpf, token: token };
+			localStorage.setItem("credenciais", JSON.stringify(credenciais));
 		}
 	}
 

@@ -74,12 +74,14 @@ public class InsertTestData {
 	contaPoupanca.setTipo(TiposDeConta.poupanca.toString());
 	contaPoupanca.setSaldo(BigDecimal.valueOf(0));
 	contaPoupanca.setUsuario(usuario);
+	contaPoupanca.setAtivo(true);
 	
 	ContaBancaria contaCorrente = new ContaBancaria();
 	contaCorrente.setNumero(numeroCorrente);
 	contaCorrente.setTipo(TiposDeConta.corrente.toString());
 	contaCorrente.setSaldo(BigDecimal.valueOf(0));
 	contaCorrente.setUsuario(usuario);
+	contaCorrente.setAtivo(false);
 
 	List<ContaBancaria> contasBancarias = new ArrayList<>();
 	contasBancarias.add(contaPoupanca);

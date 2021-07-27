@@ -14,6 +14,7 @@ function login(form) {
 		};
 
 		requestLogin(data, url);
+
 	}
 
 	function requestLogin(data, url) {
@@ -28,6 +29,7 @@ function login(form) {
 		function sucesso(data, textStatus, request) {
 			let token = request.getResponseHeader("Authorization");
 			storeCredentials(token);
+			redirectHome();
 		}
 
 		function falha() {
@@ -38,9 +40,16 @@ function login(form) {
 			const tokenData = JSON.parse(atob(token.split(".")[1]));
 			const credenciais = { contasBancarias: tokenData.contasBancarias, email: tokenData.sub, displayName: tokenData.displayName, cpf: tokenData.cpf, token: token };
 			localStorage.setItem("credenciais", JSON.stringify(credenciais));
+
+		}
+
+		function redirectHome() {
+			window.location.href = "/index";
 		}
 	}
 
+}
 
-
+function logout() {
+	localStorage.removeItem("credenciais");
 }

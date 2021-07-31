@@ -2,6 +2,7 @@ package br.com.softblue.bluebank.infrastructure.web.restController;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -153,5 +154,25 @@ public class UsuarioRestController {
 	
 	return extratos;
 	
+    }
+    
+    @PutMapping(value = "/altera-tipo-conta",  produces = "application/json")
+    public ResponseEntity<List<ContaBancaria>> alteraContaSelecionada(@RequestBody List<ContaBancaria> contasBancarias) {
+    	
+    	List<ContaBancaria> contasAtualizadas = new ArrayList<>();
+    	
+    	for (ContaBancaria contaBancaria : contasBancarias) {
+    		
+    		ContaBancaria contaDoBanco = contaBancariaService.pesquisaPorNumeroDaConta(contaBancaria.getNumero());
+    		
+			if(contaDoBanco.getAtivo() == true) {
+				contaDoBanco.setAtivo(false);
+			} else {
+				contaDoBanco.setAtivo(true);
+			}
+			contasAtualizadas.add(contaDoBanco) ;
+			contaBancariaService.save(contaDoBanco);
+		}
+    	return new ResponseEntity<>(contasAtualizadas, HttpStatus.OK);
     }
 }

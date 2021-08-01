@@ -10,9 +10,6 @@ public class SecurityUtils {
 	
 	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	
-	System.out.println(authentication.getPrincipal());
-	
-	
 	if(authentication instanceof AnonymousAuthenticationToken) {
 		return null;
 	}

@@ -34,109 +34,112 @@ import br.com.softblue.bluebank.domain.usuario.Usuario;
 @RestController
 @RequestMapping("/public")
 public class PublicRestController {
-    
-    @Autowired
-    private UsuarioService usuarioService;
 
-    @Autowired
-    private ContaBancariaService contaBancariaService;
+	@Autowired
+	private UsuarioService usuarioService;
 
-    @Autowired
-    private ExtratoService extratoService;
-    
-    @Autowired
-    private EnviaEmailService enviaEmailService;
+	@Autowired
+	private ContaBancariaService contaBancariaService;
 
-    @PostMapping(value = "/nova-conta", produces = "application/json")
-    public ResponseEntity<String> novaConta(@RequestBody @Valid Usuario usuario) throws TitularExistenteException, EmailExistenteException, CpfExistenteException {
-	
-	if(usuarioService.buscarUsuarioPorTitular(usuario.getTitular()) != null) {
-	    throw new TitularExistenteException("Já existe um usuário com esse nome.");
-	}
-	
-	if(usuarioService.buscarUsuarioPorEmail(usuario.getEmail()) != null) {
-	    throw new EmailExistenteException("Já existe um usuário com este email cadastrado.");
-	}
-	
-	if(usuarioService.buscarUsuarioPorCpf(usuario.getCpf()) != null) {
-	    throw new CpfExistenteException("Já existe um usuário com este cpf.");
-	}
+	@Autowired
+	private ExtratoService extratoService;
 
-	PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-	usuario.setSenha(encoder.encode(usuario.getSenha()));
+	@Autowired
+	private EnviaEmailService enviaEmailService;
 
-	List<ContaBancaria> contasBancarias = contaBancariaService.novaConta(usuario);
+	@PostMapping(value = "/nova-conta", produces = "application/json")
+	public ResponseEntity<Usuario> novaConta(@RequestBody @Valid Usuario usuario)
+			throws TitularExistenteException, EmailExistenteException, CpfExistenteException {
 
-	for (ContaBancaria novaConta : contasBancarias) {
-	    usuarioService.saveUsuario(usuario, novaConta);
-	}
-	
-	return new ResponseEntity<>("Conta Criada com sucesso!", HttpStatus.OK);
+		Usuario novoUsuario = new Usuario(); 
+		
+		if (usuarioService.buscarUsuarioPorTitular(usuario.getTitular()) != null) {
+			throw new TitularExistenteException("Já existe um usuário com esse nome.");
+		}
 
-    }
+		if (usuarioService.buscarUsuarioPorEmail(usuario.getEmail()) != null) {
+			throw new EmailExistenteException("Já existe um usuário com este email cadastrado.");
+		}
 
-    @PutMapping(value = "/deposito/{tipoDaConta}/{numeroDaConta}/{valor}", produces = "application/json")
-    public ResponseEntity<String> deposito(@PathVariable String tipoDaConta, @PathVariable String numeroDaConta,
-	    @PathVariable BigDecimal valor) throws ContaInexistenteException, ValorNegativoException {
+		if (usuarioService.buscarUsuarioPorCpf(usuario.getCpf()) != null) {
+			throw new CpfExistenteException("Já existe um usuário com este cpf.");
+		}
 
-	ContaBancaria contaBD = contaBancariaService.pesquisaPorNumeroETipo(tipoDaConta, numeroDaConta);
+		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		usuario.setSenha(encoder.encode(usuario.getSenha()));
 
-	if (contaBD == null) {
-	    throw new ContaInexistenteException("Conta Inexistente");
-	}
-	
-	BigDecimal saldoAtual = contaBD.getSaldo();
+		List<ContaBancaria> contasBancarias = contaBancariaService.novaConta(usuario);
 
-	if (valor.compareTo(BigDecimal.ZERO) <= 0) {
+		for (ContaBancaria novaConta : contasBancarias) {
+			novoUsuario = usuarioService.saveUsuario(usuario, novaConta);
+		}
 
-	    throw new ValorNegativoException("Informe um valor acima de zero!");
+		return new ResponseEntity<>(novoUsuario, HttpStatus.OK);
 
-	} else {
-
-	    contaBD.setSaldo(saldoAtual.add(valor));
-
-	    contaBancariaService.save(contaBD);
-	    extratoService.save(contaBD.getUsuario(), "Depósito", valor, tipoDaConta);
 	}
 
-	return new ResponseEntity<>("Depósito Realizado com sucesso!", HttpStatus.OK);
-    }
+	@PutMapping(value = "/deposito/{tipoDaConta}/{numeroDaConta}/{valor}", produces = "application/json")
+	public ResponseEntity<String> deposito(@PathVariable String tipoDaConta, @PathVariable String numeroDaConta,
+			@PathVariable BigDecimal valor) throws ContaInexistenteException, ValorNegativoException {
 
-    @GetMapping(value = "/buscar/{tipoDaConta}/{numeroDaConta}", produces = "application/json")
-    public ResponseEntity<ContaBancaria> buscaContaBancaria(@PathVariable String tipoDaConta,
-	    @PathVariable String numeroDaConta) throws ContaInexistenteException {
-    	
-	ContaBancaria contaBD = contaBancariaService.pesquisaPorNumeroETipo(tipoDaConta, numeroDaConta);
-	
-	ContaBancaria conta = new ContaBancaria();
-	conta.setNumero("454646");
-	System.out.println(conta.getNumero());
+		ContaBancaria contaBD = contaBancariaService.pesquisaPorNumeroETipo(tipoDaConta, numeroDaConta);
 
-	if (contaBD == null ) {
-	    throw new ContaInexistenteException("Conta Inexistente");
+		if (contaBD == null) {
+			throw new ContaInexistenteException("Conta Inexistente");
+		}
+
+		BigDecimal saldoAtual = contaBD.getSaldo();
+
+		if (valor.compareTo(BigDecimal.ZERO) <= 0) {
+
+			throw new ValorNegativoException("Informe um valor acima de zero!");
+
+		} else {
+
+			contaBD.setSaldo(saldoAtual.add(valor));
+
+			contaBancariaService.save(contaBD);
+			extratoService.save(contaBD.getUsuario(), "Depósito", valor, tipoDaConta);
+		}
+
+		return new ResponseEntity<>("Depósito Realizado com sucesso!", HttpStatus.OK);
 	}
 
-	return new ResponseEntity<>(contaBD, HttpStatus.OK);
-    }
-    
-    @PostMapping(value = "/recuperar/{email}", produces = "application/json")
-    public ResponseEntity<String> recuperar(@PathVariable String email) throws Exception {
-	
-	Usuario usuarioBD = usuarioService.buscarUsuarioPorEmail(email);
-	
-	if(usuarioService.buscarUsuarioPorEmail(email) == null) {
-	    throw new EmailExistenteException("Email não cadastrado.");
+	@GetMapping(value = "/buscar/{tipoDaConta}/{numeroDaConta}", produces = "application/json")
+	public ResponseEntity<ContaBancaria> buscaContaBancaria(@PathVariable String tipoDaConta,
+			@PathVariable String numeroDaConta) throws ContaInexistenteException {
+
+		ContaBancaria contaBD = contaBancariaService.pesquisaPorNumeroETipo(tipoDaConta, numeroDaConta);
+
+		ContaBancaria conta = new ContaBancaria();
+		conta.setNumero("454646");
+		System.out.println(conta.getNumero());
+
+		if (contaBD == null) {
+			throw new ContaInexistenteException("Conta Inexistente");
+		}
+
+		return new ResponseEntity<>(contaBD, HttpStatus.OK);
 	}
-	
-	String novaSenha = GerarNumero.gerar();
-	
-	PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-	usuarioService.atualizarSenha(encoder.encode(novaSenha), usuarioBD.getId());
-	
-	enviaEmailService.enviarEmail("Recuperação de senha", email, "Sua nova senha é: " + novaSenha);
-	
-	return new ResponseEntity<>("Senha enviada para o seu email.", HttpStatus.OK); 
-	
-    }
-    
+
+	@PostMapping(value = "/recuperar/{email}", produces = "application/json")
+	public ResponseEntity<String> recuperar(@PathVariable String email) throws Exception {
+
+		Usuario usuarioBD = usuarioService.buscarUsuarioPorEmail(email);
+
+		if (usuarioService.buscarUsuarioPorEmail(email) == null) {
+			throw new EmailExistenteException("Email não cadastrado.");
+		}
+
+		String novaSenha = GerarNumero.gerar();
+
+		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		usuarioService.atualizarSenha(encoder.encode(novaSenha), usuarioBD.getId());
+
+		enviaEmailService.enviarEmail("Recuperação de senha", email, "Sua nova senha é: " + novaSenha);
+
+		return new ResponseEntity<>("Senha enviada para o seu email.", HttpStatus.OK);
+
+	}
+
 }

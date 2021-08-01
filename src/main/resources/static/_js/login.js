@@ -22,6 +22,7 @@ function login(form) {
 			type: "POST",
 			url: url,
 			data: JSON.stringify(data),
+			contentType: "application/json; charset=utf-8",
 			async: true
 
 		}).then(sucesso, falha);
@@ -53,3 +54,5 @@ function login(form) {
 function logout() {
 	localStorage.removeItem("credenciais");
 }
+
+window.onload = logout;

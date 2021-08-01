@@ -19,6 +19,7 @@ import br.com.softblue.bluebank.domain.contaBancaria.ValorNegativoException;
 import br.com.softblue.bluebank.domain.usuario.CpfExistenteException;
 import br.com.softblue.bluebank.domain.usuario.EmailExistenteException;
 import br.com.softblue.bluebank.domain.usuario.TitularExistenteException;
+import br.com.softblue.bluebank.domain.usuario.UsuarioInexistenteException;
 
 @RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -65,6 +66,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public RestResponseError handlerCpfExistenteException(CpfExistenteException e) {
+	return RestResponseError.fromMEssage(e.getMessage());
+    }
+    
+    @ExceptionHandler
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public RestResponseError UsuarioInexistenteException(UsuarioInexistenteException e) {
 	return RestResponseError.fromMEssage(e.getMessage());
     }
     

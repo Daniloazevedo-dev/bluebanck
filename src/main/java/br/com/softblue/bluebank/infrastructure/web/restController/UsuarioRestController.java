@@ -25,154 +25,207 @@ import br.com.softblue.bluebank.domain.contaBancaria.SaldoInsufucienteException;
 import br.com.softblue.bluebank.domain.contaBancaria.ValorNegativoException;
 import br.com.softblue.bluebank.domain.extrato.Extrato;
 import br.com.softblue.bluebank.domain.search.Search;
+import br.com.softblue.bluebank.domain.usuario.CpfExistenteException;
+import br.com.softblue.bluebank.domain.usuario.EmailExistenteException;
+import br.com.softblue.bluebank.domain.usuario.TitularExistenteException;
 import br.com.softblue.bluebank.domain.usuario.Usuario;
+import br.com.softblue.bluebank.domain.usuario.UsuarioInexistenteException;
 import br.com.softblue.bluebank.infrastructure.web.security.SecurityUtils;
 
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioRestController {
 
-    @Autowired
-    private ContaBancariaService contaBancariaService;
+	@Autowired
+	private ContaBancariaService contaBancariaService;
 
-    @Autowired
-    private ExtratoService extratoService;
-    
-    @Autowired
-    private UsuarioService usuarioService;
+	@Autowired
+	private ExtratoService extratoService;
 
-    @PutMapping(value = "/saque/{tipoDaConta}/{numeroDaConta}/{valor}", produces = "application/json")
-    public ResponseEntity<String> sacar(@PathVariable String tipoDaConta, @PathVariable String numeroDaConta,
-	    @PathVariable BigDecimal valor)
-	    throws ContaInexistenteException, ValorNegativoException, SaldoInsufucienteException {
+	@Autowired
+	private UsuarioService usuarioService;
 
-	ContaBancaria contaBD = contaBancariaService.pesquisaPorNumeroETipo(tipoDaConta, numeroDaConta);
+	@PutMapping(value = "/saque/{tipoDaConta}/{numeroDaConta}/{valor}", produces = "application/json")
+	public ResponseEntity<String> sacar(@PathVariable String tipoDaConta, @PathVariable String numeroDaConta,
+			@PathVariable BigDecimal valor)
+			throws ContaInexistenteException, ValorNegativoException, SaldoInsufucienteException {
 
-	if (contaBD == null) {
-	    throw new ContaInexistenteException("Conta Inexistente.");
+		ContaBancaria contaBD = contaBancariaService.pesquisaPorNumeroETipo(tipoDaConta, numeroDaConta);
+
+		if (contaBD == null) {
+			throw new ContaInexistenteException("Conta Inexistente.");
+		}
+
+		BigDecimal saldoAtual = contaBD.getSaldo();
+
+		if (valor.compareTo(BigDecimal.ZERO) <= 0) {
+
+			throw new ValorNegativoException("Informe um valor acima de zero!");
+
+		} else if (valor.compareTo(saldoAtual) == 1) {
+
+			throw new SaldoInsufucienteException("Saldo Insuficiente");
+
+		} else {
+
+			contaBD.setSaldo(saldoAtual.subtract(valor));
+			contaBancariaService.save(contaBD);
+			extratoService.save(contaBD.getUsuario(), "Saque", valor, tipoDaConta);
+		}
+
+		return new ResponseEntity<>("Saque Realizado com sucesso!", HttpStatus.OK);
 	}
 
-	BigDecimal saldoAtual = contaBD.getSaldo();
+	@GetMapping(value = "/saldo/{tipoDaConta}/{numeroDaConta}", produces = "application/json")
+	public ResponseEntity<BigDecimal> saldo(@PathVariable String tipoDaConta, @PathVariable String numeroDaConta)
+			throws ContaInexistenteException {
 
-	if (valor.compareTo(BigDecimal.ZERO) <= 0) {
+		ContaBancaria contaBD = contaBancariaService.pesquisaPorNumeroETipo(tipoDaConta, numeroDaConta);
 
-	    throw new ValorNegativoException("Informe um valor acima de zero!");
+		if (contaBD == null) {
+			throw new ContaInexistenteException("Conta Inexistente");
+		}
 
-	} else if (valor.compareTo(saldoAtual) == 1) {
+		BigDecimal saldoAtual = contaBD.getSaldo();
 
-	    throw new SaldoInsufucienteException("Saldo Insuficiente");
-
-	} else {
-
-	    contaBD.setSaldo(saldoAtual.subtract(valor));
-	    contaBancariaService.save(contaBD);
-	    extratoService.save(contaBD.getUsuario(), "Saque", valor, tipoDaConta);
+		return new ResponseEntity<>(saldoAtual, HttpStatus.OK);
 	}
 
-	return new ResponseEntity<>("Saque Realizado com sucesso!", HttpStatus.OK);
-    }
+	@PutMapping(value = "/transferencia/{tipoDaContaRemetente}/{numeroDaContaRemetente}/{tipoDaContaDestinatario}/{numeroDaContaDestinatario}/{valorTransferencia}", produces = "application/json")
+	public ResponseEntity<String> transferencia(@PathVariable String tipoDaContaRemetente,
+			@PathVariable String numeroDaContaRemetente, @PathVariable String tipoDaContaDestinatario,
+			@PathVariable String numeroDaContaDestinatario, @PathVariable BigDecimal valorTransferencia
 
-    @GetMapping(value = "/saldo/{tipoDaConta}/{numeroDaConta}", produces = "application/json")
-    public ResponseEntity<BigDecimal> saldo(@PathVariable String tipoDaConta, @PathVariable String numeroDaConta)
-	    throws ContaInexistenteException {
+	) throws ContaInexistenteException, ValorNegativoException, SaldoInsufucienteException {
 
-	ContaBancaria contaBD = contaBancariaService.pesquisaPorNumeroETipo(tipoDaConta, numeroDaConta);
+		ContaBancaria contaBDRemetente = contaBancariaService.pesquisaPorNumeroETipo(tipoDaContaRemetente,
+				numeroDaContaRemetente);
 
-	if (contaBD == null) {
-	    throw new ContaInexistenteException("Conta Inexistente");
+		if (contaBDRemetente == null) {
+			throw new ContaInexistenteException("Conta do remetente inexistente");
+		}
+
+		BigDecimal saldoAtualRemetente = contaBDRemetente.getSaldo();
+
+		ContaBancaria contaBDDestinatario = contaBancariaService.pesquisaPorNumeroETipo(tipoDaContaDestinatario,
+				numeroDaContaDestinatario);
+
+		if (contaBDDestinatario == null) {
+			throw new ContaInexistenteException("Conta do destinatáiro inexistente");
+		}
+
+		BigDecimal saldoAtualDestinatario = contaBDDestinatario.getSaldo();
+
+		if (valorTransferencia.compareTo(BigDecimal.ZERO) <= 0) {
+
+			throw new ValorNegativoException("Informe um valor acima de zero!");
+
+		} else if (valorTransferencia.compareTo(saldoAtualRemetente) == 1) {
+
+			throw new SaldoInsufucienteException("Saldo Insuficiente");
+
+		} else {
+
+			contaBDRemetente.setSaldo(saldoAtualRemetente.subtract(valorTransferencia));
+			contaBDDestinatario.setSaldo(saldoAtualDestinatario.add(valorTransferencia));
+
+			contaBancariaService.save(contaBDRemetente);
+			contaBancariaService.save(contaBDDestinatario);
+
+			extratoService.save(contaBDRemetente.getUsuario(), "Transfêrencia", valorTransferencia,
+					tipoDaContaRemetente);
+			extratoService.save(contaBDDestinatario.getUsuario(), "Depósito recebido", valorTransferencia,
+					tipoDaContaDestinatario);
+		}
+
+		return new ResponseEntity<>("Transferência realizada com sucesso!", HttpStatus.OK);
+
 	}
 
-	BigDecimal saldoAtual = contaBD.getSaldo();
+	@GetMapping(value = "/extrato/search", produces = "application/json")
+	public List<Extrato> buscarExtratos(@RequestBody Search search) throws DataInicialException {
 
-	return new ResponseEntity<>(saldoAtual, HttpStatus.OK);
-    }
+		if (search.getDataInicial() == null) {
+			throw new DataInicialException("Insira uma data Inicial");
+		}
 
-    @PutMapping(value = "/transferencia/{tipoDaContaRemetente}/{numeroDaContaRemetente}/{tipoDaContaDestinatario}/{numeroDaContaDestinatario}/{valorTransferencia}", produces = "application/json")
-    public ResponseEntity<String> transferencia(@PathVariable String tipoDaContaRemetente,
-	    @PathVariable String numeroDaContaRemetente, @PathVariable String tipoDaContaDestinatario,
-	    @PathVariable String numeroDaContaDestinatario, @PathVariable BigDecimal valorTransferencia
+		if (search.getDataFinal() == null) {
+			search.setDataFinal(LocalDate.now());
+		}
 
-    ) throws ContaInexistenteException, ValorNegativoException, SaldoInsufucienteException {
+		String emailUsuario = SecurityUtils.userDetailsImpl();
 
-	ContaBancaria contaBDRemetente = contaBancariaService.pesquisaPorNumeroETipo(tipoDaContaRemetente, numeroDaContaRemetente);
+		Usuario usuario = usuarioService.buscarUsuarioPorEmail(emailUsuario);
 
-	if (contaBDRemetente == null) {
-	    throw new ContaInexistenteException("Conta do remetente inexistente");
+		List<Extrato> extratos = extratoService.pesquisaExtratoPorData(usuario.getId(), search.getDataInicial(),
+				search.getDataFinal());
+
+		return extratos;
+
 	}
 
-	BigDecimal saldoAtualRemetente = contaBDRemetente.getSaldo();
+	@PutMapping(value = "/altera-tipo-conta", produces = "application/json")
+	public ResponseEntity<List<ContaBancaria>> alteraContaSelecionada(
+			@RequestBody List<ContaBancaria> contasBancarias) {
 
-	ContaBancaria contaBDDestinatario = contaBancariaService.pesquisaPorNumeroETipo(tipoDaContaDestinatario, numeroDaContaDestinatario);
+		List<ContaBancaria> contasAtualizadas = new ArrayList<>();
 
-	if (contaBDDestinatario == null) {
-	    throw new ContaInexistenteException("Conta do destinatáiro inexistente");
-	}
+		for (ContaBancaria contaBancaria : contasBancarias) {
 
-	BigDecimal saldoAtualDestinatario = contaBDDestinatario.getSaldo();
+			ContaBancaria contaDoBanco = contaBancariaService.pesquisaPorNumeroDaConta(contaBancaria.getNumero());
 
-	if (valorTransferencia.compareTo(BigDecimal.ZERO) <= 0) {
-
-	    throw new ValorNegativoException("Informe um valor acima de zero!");
-
-	} else if (valorTransferencia.compareTo(saldoAtualRemetente) == 1) {
-
-	    throw new SaldoInsufucienteException("Saldo Insuficiente");
-
-	} else {
-	    
-	    contaBDRemetente.setSaldo(saldoAtualRemetente.subtract(valorTransferencia));
-	    contaBDDestinatario.setSaldo(saldoAtualDestinatario.add(valorTransferencia));
-
-	    contaBancariaService.save(contaBDRemetente);
-	    contaBancariaService.save(contaBDDestinatario);
-	    
-	    extratoService.save(contaBDRemetente.getUsuario(), "Transfêrencia", valorTransferencia, tipoDaContaRemetente);
-	    extratoService.save(contaBDDestinatario.getUsuario(), "Depósito recebido", valorTransferencia, tipoDaContaDestinatario);
-	}
-
-	return new ResponseEntity<>("Transferência realizada com sucesso!", HttpStatus.OK);
-
-    }
-    
-    @GetMapping(value = "/extrato/search", produces = "application/json")
-    public List<Extrato> buscarExtratos(@RequestBody Search search) throws DataInicialException {
-	
-	
-	if(search.getDataInicial() == null) {
-		throw new DataInicialException("Insira uma data Inicial");
-	}
-	
-	if(search.getDataFinal() == null) {
-	    search.setDataFinal(LocalDate.now());
-	}
-	
-	String emailUsuario = SecurityUtils.userDetailsImpl();
-	
-	Usuario usuario = usuarioService.buscarUsuarioPorEmail(emailUsuario);
-	
-	List<Extrato> extratos = extratoService.pesquisaExtratoPorData(usuario.getId(), search.getDataInicial(), search.getDataFinal());
-	
-	return extratos;
-	
-    }
-    
-    @PutMapping(value = "/altera-tipo-conta",  produces = "application/json")
-    public ResponseEntity<List<ContaBancaria>> alteraContaSelecionada(@RequestBody List<ContaBancaria> contasBancarias) {
-    	
-    	List<ContaBancaria> contasAtualizadas = new ArrayList<>();
-    	
-    	for (ContaBancaria contaBancaria : contasBancarias) {
-    		
-    		ContaBancaria contaDoBanco = contaBancariaService.pesquisaPorNumeroDaConta(contaBancaria.getNumero());
-    		
-			if(contaDoBanco.getAtivo() == true) {
+			if (contaDoBanco.getAtivo() == true) {
 				contaDoBanco.setAtivo(false);
 			} else {
 				contaDoBanco.setAtivo(true);
 			}
-			contasAtualizadas.add(contaDoBanco) ;
+			contasAtualizadas.add(contaDoBanco);
 			contaBancariaService.save(contaDoBanco);
 		}
-    	return new ResponseEntity<>(contasAtualizadas, HttpStatus.OK);
-    }
+		return new ResponseEntity<>(contasAtualizadas, HttpStatus.OK);
+	}
+
+	@PutMapping(value = "/altetar-dados", produces = "application/json")
+	public ResponseEntity<Usuario> alterarCadastro(@RequestBody Usuario usuario) throws TitularExistenteException,
+			EmailExistenteException, CpfExistenteException, UsuarioInexistenteException {
+
+		Usuario usuarioAtualizado = new Usuario();
+		
+		String emailUsuario = SecurityUtils.userDetailsImpl();
+
+		Usuario usuarioBanco = usuarioService.buscarUsuarioPorEmail(emailUsuario);
+
+		if (usuarioBanco != null) {
+
+			if (!usuarioBanco.getTitular().equalsIgnoreCase(usuario.getTitular())) {
+				if (usuarioService.buscarUsuarioPorTitular(usuario.getTitular()) != null) {
+					throw new TitularExistenteException("Já existe um usuário com esse nome.");
+				}
+			}
+
+			if (!usuarioBanco.getEmail().equalsIgnoreCase(usuario.getEmail())) {
+
+				if (usuarioService.buscarUsuarioPorEmail(usuario.getEmail()) != null) {
+					throw new EmailExistenteException("Já existe um usuário com este email cadastrado.");
+				}
+			}
+
+			if (!usuarioBanco.getCpf().equalsIgnoreCase(usuario.getCpf())) {
+				if (usuarioService.buscarUsuarioPorCpf(usuario.getCpf()) != null) {
+					throw new CpfExistenteException("Já existe um usuário com este cpf.");
+				}
+			}
+			
+			usuarioBanco.setTitular(usuario.getTitular());
+			usuarioBanco.setEmail(usuario.getEmail());
+			usuarioBanco.setCpf(usuario.getCpf());
+			usuarioAtualizado = usuarioService.atualizaUsuario(usuarioBanco);
+
+		} else {
+			throw new UsuarioInexistenteException("Usuario Inexistente.");
+		}
+
+		return new ResponseEntity<>(usuarioAtualizado, HttpStatus.OK);
+
+	}
 }

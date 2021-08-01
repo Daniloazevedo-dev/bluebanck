@@ -9,20 +9,59 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">   
          
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
          
         <script src="/_js/mask.js" type="text/javascript"></script>
+        <script src="/_js/nova-conta.js" type="text/javascript"></script>
          
     </head>
     
     <body>
                 
-            <nav class="navbar navbar-expand-md navbar-light bg-light">
+            <nav id="menuNovaConta" class="navbar navbar-expand-md navbar-light bg-light">
                 <div class="mx-auto order-0">
                     <a class="navbar-brand mx-auto" href="#"><img src="/_imagens/logo.png" height="100" class="d-inline-block align-top " alt="Logo do sistema"></a>
                 </div>
             </nav>  
+            
+            <nav id="menuLogado"  class="navbar navbar-expand-md navbar-light bg-light">
+                <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="home.html">HOME</a>
+                        </li>                  
+
+                         <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              SERVIÇOS
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                              <a class="dropdown-item" href="transferencia.html">Transferêcia</a>
+
+                              <a class="dropdown-item" href="extrato.html">Extrato</a>
+                            </div>
+
+                            <li class="nav-item">
+                                 <a class="nav-link" href="/public/login" onclick="logout()">SAIR</a>
+                            </li>
+                    </ul>
+                </div>
+                <div class="mx-auto order-0">
+                    <a class="navbar-brand mx-auto" href="home.html"><img src="/_imagens/logo.png" height="100" class="d-inline-block align-top " alt="Logo do sistema"></a>
+                    <button class="navbar-toggler float-right mt-5" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+            
+                <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Olá <span id="displayName"></span>, Bom dia!</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
             
             <p class="h4 text-center mt-4">Abertura de Conta</p>
         
@@ -30,13 +69,12 @@
                 
                 <div class="mt-4">
                     
-                    <form method="" action="" class="validator" novalidate>
+                    <form method="" action="" onsubmit="novaConta(this);" class="validator" novalidate>
                         
                         <div class="form-group col-md-8 offset-md-2">
                             
-                            <label name="nome" for="nome" >Titular:</label>                 
-                            <input class="form-control" type="text" id="nome" name="nome" placeholder="Informe o seu nome completo..." required/>
-                            
+                            <label name="titular" for="titular" >Titular:</label>                 
+                            <input class="form-control" type="text" id="titular" name="titular" placeholder="Informe o seu nome completo..." required/>
                             <div class="invalid-feedback">
                                 <p>O nome é obrigatório!</p>
                             </div>
@@ -67,7 +105,7 @@
 
                         <div class="form-group col-md-8 offset-md-2">
                             
-                            <label name="senha" for="senha" >Senha:</label>
+                            <label name="senha" id="labelSenha" for="senha" >Senha:</label>
                             <input class="form-control" type="password" id="senha" name="senha" placeholder="Informe uma senha..." required/>
                             
                             <div class="invalid-feedback">
@@ -77,8 +115,8 @@
                         </div>
 
                         <div class="form-group text-center">
-                            <a  href="index"><input class="btn btn-primary" type="button" value="voltar" ></a>
-                            <a  href="home"><input class="btn btn-primary" type="submit" value="Abrir conta"/></a>
+                            <input class="btn btn-primary" onclick="voltar()" type="button" value="voltar" >
+                            <input class="btn btn-primary" id="abrirConta" type="submit" value="Abrir conta"  />
                         </div>
 
                     </form>
@@ -89,7 +127,6 @@
             <span class="text-muted" >Copyright © 2020 | Danilo Azevedo | Projeto realizado para estudos | Instituição: <a  class="text-info" href="https://www.softblue.com.br/">Softblue</a></span>
     </div> 
     
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     </body>

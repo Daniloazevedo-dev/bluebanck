@@ -9,32 +9,35 @@ import br.com.softblue.bluebank.domain.usuario.UsuarioRepository;
 
 @Service
 public class UsuarioService {
-    
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-   
-    public void saveUsuario(Usuario usuario, ContaBancaria conta) {
-	
-	usuario.getContas().add(conta);
-	usuarioRepository.save(usuario);
-    }
 
-    public Usuario buscarUsuarioPorEmail(String email) {
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+
+	public Usuario saveUsuario(Usuario usuario, ContaBancaria conta) {
+		usuario.getContas().add(conta);
+		return usuarioRepository.save(usuario);
+	}
 	
-	return usuarioRepository.findByEmail(email);
-    }
-    
-    public Usuario buscarUsuarioPorCpf(String cpf) {
-	
-  	return usuarioRepository.findByCpf(cpf);
-      }
-    
-    public Usuario buscarUsuarioPorTitular(String titular) {
-	
-  	return usuarioRepository.findByTitular(titular);
-      }
-    
-    public void atualizarSenha(String senha, Long idUsuario) {
-	usuarioRepository.updateSenha(senha, idUsuario);
-    }
+	public Usuario atualizaUsuario(Usuario usuario) {
+		return usuarioRepository.save(usuario);
+	}
+
+	public Usuario buscarUsuarioPorEmail(String email) {
+
+		return usuarioRepository.findByEmail(email);
+	}
+
+	public Usuario buscarUsuarioPorCpf(String cpf) {
+
+		return usuarioRepository.findByCpf(cpf);
+	}
+
+	public Usuario buscarUsuarioPorTitular(String titular) {
+
+		return usuarioRepository.findByTitular(titular);
+	}
+
+	public void atualizarSenha(String senha, Long idUsuario) {
+		usuarioRepository.updateSenha(senha, idUsuario);
+	}
 }

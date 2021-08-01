@@ -75,4 +75,9 @@ function setContasBancarias(credenciais) {
 		
 }
 
+function alterarCadastro() {
+	window.location.href = "/public/nova-conta"
+}
+
+
 window.onload = setValoresHome

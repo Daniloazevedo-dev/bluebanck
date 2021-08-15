@@ -33,8 +33,8 @@ function login(form) {
 			redirectHome();
 		}
 
-		function falha() {
-			alert("E-mail ou senha incorreto.");
+		function falha(data) {
+			alert(data.responseJSON.error);
 		}
 
 		function storeCredentials(token) {

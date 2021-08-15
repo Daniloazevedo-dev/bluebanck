@@ -5,73 +5,76 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import br.com.softblue.bluebank.application.util.CollectionUtils;
 import br.com.softblue.bluebank.domain.contaBancaria.ContaBancaria;
 import br.com.softblue.bluebank.domain.usuario.Usuario;
 
 @SuppressWarnings("serial")
 public class UserDetailsImpl implements UserDetails {
-    
-    private String email;
-    private String senha;
-    private String displayname;
-    private String cpf;
-    private List<ContaBancaria> contasBancarias = new ArrayList<>();
-    
-    public UserDetailsImpl(Usuario usuario) {
-	this.email = usuario.getEmail();
-	this.senha = usuario.getSenha();
-	this.displayname = usuario.getTitular();
-	this.cpf = usuario.getCpf();
-	this.contasBancarias = usuario.getContas();
-    }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-	return AuthorityUtils.NO_AUTHORITIES;
-    }
+	private String email;
+	private String senha;
+	private String displayname;
+	private String cpf;
+	private Collection<? extends GrantedAuthority> roles;
+	private List<ContaBancaria> contasBancarias = new ArrayList<>();
 
-    @Override
-    public String getPassword() {
-	return senha;
-    }
+	public UserDetailsImpl(Usuario usuario) {
+		this.email = usuario.getEmail();
+		this.senha = usuario.getSenha();
+		this.displayname = usuario.getTitular();
+		this.cpf = usuario.getCpf();
+		this.contasBancarias = usuario.getContas();
+		this.roles = CollectionUtils.listOf(new SimpleGrantedAuthority("ROLE_" + usuario.getRole()));
+	}
 
-    @Override
-    public String getUsername() {
-	return email;
-    }
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return roles;
+	}
 
-    @Override
-    public boolean isAccountNonExpired() {
-	return true;
-    }
+	@Override
+	public String getPassword() {
+		return senha;
+	}
 
-    @Override
-    public boolean isAccountNonLocked() {
-	return true;
-    }
+	@Override
+	public String getUsername() {
+		return email;
+	}
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-	return true;
-    }
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
 
-    @Override
-    public boolean isEnabled() {
-	return true;
-    }
-    
-    public String getDisplayname() {
-	return displayname;
-    }
-    
-    public String getCpf() {
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+
+	public String getDisplayname() {
+		return displayname;
+	}
+
+	public String getCpf() {
 		return cpf;
 	}
 
-    public List<ContaBancaria> getContasBancarias() {
-	return contasBancarias;
-    }
+	public List<ContaBancaria> getContasBancarias() {
+		return contasBancarias;
+	}
 }

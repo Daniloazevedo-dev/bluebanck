@@ -44,4 +44,5 @@ public class RestResponseError {
 		.map(error -> new ObjectError(error.getField(), error.getDefaultMessage()))
 		.collect(Collectors.toList());
     }
+
 }

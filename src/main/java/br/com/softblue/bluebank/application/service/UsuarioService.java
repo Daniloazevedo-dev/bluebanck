@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.softblue.bluebank.domain.contaBancaria.ContaBancaria;
+import br.com.softblue.bluebank.domain.usuario.Roles;
 import br.com.softblue.bluebank.domain.usuario.Usuario;
 import br.com.softblue.bluebank.domain.usuario.UsuarioRepository;
 
@@ -14,6 +15,7 @@ public class UsuarioService {
 	private UsuarioRepository usuarioRepository;
 
 	public Usuario saveUsuario(Usuario usuario, ContaBancaria conta) {
+		usuario.setRole(Roles.ADMIN.toString());
 		usuario.getContas().add(conta);
 		return usuarioRepository.save(usuario);
 	}

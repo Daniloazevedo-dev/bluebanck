@@ -62,6 +62,7 @@ function setDadosParaAlterarCadastro() {
 
 		labelSenha.style.display = "none";
 		senha.style.display = "none";
+		msgErroSenha.style.display = "none";
 
 		titular.value = credenciais.displayName;
 		email.value = credenciais.email;

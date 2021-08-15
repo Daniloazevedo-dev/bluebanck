@@ -51,7 +51,10 @@ public class Usuario {
     
     @NotEmpty(message = "A senha não pode ser vazio")
     private String senha;
-     
+    
+    @Column(updatable = false)
+    private String role;
+    
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<ContaBancaria> contas = new ArrayList<>(); 

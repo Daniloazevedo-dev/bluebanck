@@ -1,30 +1,29 @@
-(function() { 
-	
-    window.addEventListener('load', function() {
-    
-        var forms = document.getElementsByClassName('validator');
+(function() {
 
-        var validation = Array.prototype.filter.call(forms, function(form) {
+	window.addEventListener('load', function() {
 
-            form.addEventListener('submit', function(event) {
+		var forms = document.getElementsByClassName('validator');
 
-                if (form.checkValidity() === false) {
+		var validation = Array.prototype.filter.call(forms, function(form) {
 
-                          event.preventDefault();
-                          event.stopPropagation();
-                    
-                } else if (form.checkValidity() === true && form.getAttribute("id") === "formVerificaContaDestino") {
-                        
-                        event.preventDefault();
-                        event.stopPropagation();
-                        
-                        $('#ModalDadosDestinatario').modal('show'); 
-                    }
+			form.addEventListener('submit', function(event) {
 
-                form.classList.add('was-validated');
+				if (form.checkValidity() === false) {
+					event.preventDefault();
+					event.stopPropagation();
 
-                }, false);
-            });
-        }, false);
+				} else if (form.checkValidity() === true && form.getAttribute("id") === "formVerificaContaDestino") {
+
+					event.preventDefault();
+					event.stopPropagation();
+
+					$('#ModalDadosDestinatario').modal('show');
+				}
+
+				form.classList.add('was-validated');
+
+			}, false);
+		});
+	}, false);
 })();
 

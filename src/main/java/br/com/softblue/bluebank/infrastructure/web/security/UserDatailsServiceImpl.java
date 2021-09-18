@@ -11,23 +11,23 @@ import br.com.softblue.bluebank.domain.usuario.UsuarioRepository;
 
 @Service
 public class UserDatailsServiceImpl implements UserDetailsService {
-    
-    private UsuarioRepository usuarioRepository;
-    
-    @Autowired
-    public UserDatailsServiceImpl(UsuarioRepository usuarioRepository) {
-	this.usuarioRepository = usuarioRepository;
-    }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-	
-	Usuario usuario = usuarioRepository.findByEmail(email);
-	
-	if(usuario == null) {
-	    throw new UsernameNotFoundException(email);
+	private UsuarioRepository usuarioRepository;
+
+	@Autowired
+	public UserDatailsServiceImpl(UsuarioRepository usuarioRepository) {
+		this.usuarioRepository = usuarioRepository;
 	}
-	
-	return new UserDetailsImpl(usuario);
-    }
+
+	@Override
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+		Usuario usuario = usuarioRepository.findByEmail(email);
+
+		if (usuario == null) {
+			throw new UsernameNotFoundException(email);
+		}
+
+		return new UserDetailsImpl(usuario);
+	}
 }

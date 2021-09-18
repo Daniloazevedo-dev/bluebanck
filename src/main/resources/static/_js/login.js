@@ -45,7 +45,7 @@ function login(form) {
 		}
 
 		function redirectHome() {
-			window.location.href = "/index";
+			window.location.href = "/home";
 		}
 	}
 

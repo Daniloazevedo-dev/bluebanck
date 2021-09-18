@@ -18,7 +18,7 @@
                 <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="home.html">HOME</a>
+                            <a class="nav-link" href="/home">HOME</a>
                         </li>                  
 
                          <li class="nav-item dropdown">
@@ -26,9 +26,8 @@
                               SERVIÇOS
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                              <a class="dropdown-item" href="transferencia.html">Transferêcia</a>
-
-                              <a class="dropdown-item" href="extrato.html">Extrato</a>
+                              <a class="dropdown-item" href="/transferencia">Transferêcia</a>
+                              <a class="dropdown-item" href="/extrato">Extrato</a>
                             </div>
 
                             <li class="nav-item">
@@ -51,22 +50,25 @@
                     </ul>
                 </div>
             </nav>
-        <div class="container mt-4">
             
-            <div class="card">
+              <p class="h4 text-center mt-4">Home</p>
+            
+        <div class="container">
+            
+            <div class="card mt-4">
               <div class="card-header text-center">
                 Selecione a conta em que deseja utilizar os serviços:
               </div>
                   <div class="card-body ">
-                <div class="custom-control custom-radio">
-                  <input type="radio" class="custom-control-input" id="contaPoupanca" onclick="selecionarConta()" name="contaPoupanca" >
-                  <label class="custom-control-label" for="contaPoupanca">Conta Poupança</label>
-                </div>
+	                <div class="custom-control custom-radio">
+	                  <input type="radio" class="custom-control-input" id="contaPoupanca" onclick="selecionarConta()" name="contaPoupanca" >
+	                  <label class="custom-control-label" for="contaPoupanca">Conta Poupança</label>
+	                </div>
                 
-                 <div class="custom-control custom-radio">
-                  <input type="radio" class="custom-control-input" id="contaCorrente" onclick="selecionarConta()" name="contaCorrente" >
-                  <label class="custom-control-label" for="contaCorrente">Conta Corrente</label>
-                </div>
+	                 <div class="custom-control custom-radio">
+	                  <input type="radio" class="custom-control-input" id="contaCorrente" onclick="selecionarConta()" name="contaCorrente" >
+	                  <label class="custom-control-label" for="contaCorrente">Conta Corrente</label>
+	                </div>
                       
                 </div>
             </div>
@@ -85,23 +87,47 @@
                     Meus Dados
                   </div>
                   <div class="card-body ">
-                    <div class="form-group col-md-8 offset-md-2">
-                        <div class="custom-control custom-radio">
-                           <strong>Titular: </strong> <span id="titular"></span>                            
-                        </div>
-                    
-                        <div class="custom-control custom-radio">
-                           <strong >E-mail: </strong> <span id="email" ></span>
-                        </div>
-                        
-                        <div class="custom-control custom-radio">
-                            <strong>CPF: </strong><span id="cpf" ></span>
-                        </div>
+                  	<div class="row">
+                  		<div class="col-md-6 ">
+                  			<div class="row">
+                  				<div class="col-md-4 text-right" >
+	                           <strong>Titular: </strong>                             
+	                        </div>
+	                        <div class="col-md-6"  >
+	                        	<span id="titular"></span>
+	                        </div>
+                  			</div>
+                  		</div>
+                  	</div>
+                    	<div class="row">
+                  		<div class="col-md-6 ">
+                  			<div class="row">
+                  				<div class="col-md-4 text-right" >
+	                           <strong >E-mail: </strong>                             
+	                        </div>
+	                        <div class="col-md-5"  >
+	                        	<span id="email" ></span>
+	                        </div>
+                  			</div>
+                  		</div>
+                  	</div>
+                  	<div class="row">
+                  		<div class="col-md-6 ">
+                  			<div class="row">
+                  				<div class="col-md-4 text-right" >
+	                            <strong>CPF: </strong>                             
+	                        </div>
+	                        <div class="col-md-6"  >
+	                        	<span id="cpf" ></span>
+	                        </div>
+                  			</div>
+                  		</div>
+                  	</div>	
                        <div class="form-group text-center">
                        <input class="btn btn-primary" type="submit" value="Alterar" onclick="alterarCadastro()"  />
                     </div>                         
-                    </div>                      
                 </div>
+                
             </div>
             
              <div class="card mt-4">
@@ -109,21 +135,35 @@
                     Dados da Conta
                   </div>
                   <div class="card-body ">
-                    <div class="form-group col-md-8 offset-md-2">
-                        <div class="custom-control custom-radio">
-                            <strong>Poupança: </strong><span id="poupanca" ></span>                            
-                        </div>
-                    
-                        <div class="custom-control custom-radio">
-                           	<strong>Corrente: </strong> <span id="corrente" ></span>                            
-                        </div>                         
-                    </div>                      
+                  <div class="row">
+                  		<div class="col-md-6 ">
+                  			<div class="row">
+                  				<div class="col-md-4 text-right" >
+	                            <strong>Poupança: </strong>                              
+	                        </div>
+	                        <div class="col-md-6"  >
+	                        	<span id="poupanca" ></span>
+	                        </div>
+                  			</div>
+                  		</div>
+                  	</div>
+                  	<div class="row">
+                  		<div class="col-md-6 ">
+                  			<div class="row">
+                  				<div class="col-md-4 text-right" >
+	                            <strong>Corrente: </strong>                                
+	                        </div>
+	                        <div class="col-md-6"  >
+	                        	<span id="corrente" ></span>
+	                        </div>
+                  			</div>
+                  		</div>
+                  	</div>		
                 </div>
             </div>
-            
         </div>
         
-     <div class="navbar footer-light bg-dark d-flex justify-content-center mt-4" href="#">
+     <div class="navbar footer-light bg-dark d-flex justify-content-center mt-5 footer navbar-fixed-bottom" href="#">
             <span class="text-muted" >Copyright © 2020 | Danilo Azevedo | Projeto realizado para estudos | Instituição: <a  class="text-info" href="https://www.softblue.com.br/">Softblue</a></span>
     </div>
         

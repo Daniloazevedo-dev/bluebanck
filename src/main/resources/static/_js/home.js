@@ -98,5 +98,13 @@ function setSaudacao() {
 	
 }
 
+function redirectTranseferencia() {
+	window.location.href = "/trasferencia"
+}
+
+function redirectExtrato() {
+	window.location.href = "/extrato"
+}
+
 
 window.onload = setValoresHome

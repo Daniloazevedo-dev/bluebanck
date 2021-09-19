@@ -9,7 +9,9 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
         
+        <script src="/_js/transferencia.js" type="text/javascript"></script>
         <script src="_js/mask.js" type="text/javascript"></script>
         <script src="_js/validateModalTransferencia.js" type="text/javascript"></script>
     </head>
@@ -25,18 +27,18 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               SERVIÇOS
                             </a>
-                           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                               <a class="dropdown-item" href="/transferencia">Transferêcia</a>
                               <a class="dropdown-item" href="/extrato">Extrato</a>
                             </div>
 
                             <li class="nav-item">
-                               <a class="nav-link" href="/public/login" onclick="logout()">SAIR</a>
+                                 <a class="nav-link" href="/public/login" onclick="logout()">SAIR</a>
                             </li>
                     </ul>
                 </div>
                 <div class="mx-auto order-0">
-                    <a class="navbar-brand mx-auto" href="home.html"><img src="_imagens/logo.png" height="100" class="d-inline-block align-top " alt="Logo do sistema"></a>
+                    <a class="navbar-brand mx-auto" href="home.html"><img src="/_imagens/logo.png" height="100" class="d-inline-block align-top " alt="Logo do sistema"></a>
                     <button class="navbar-toggler float-right mt-5" type="button" data-toggle="collapse" data-target=".dual-collapse2">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -45,12 +47,11 @@
                 <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Olá Danilo, Bom dia!</a>
+                            <a class="nav-link" href="#">Olá <span id="displayName"></span>, <span id="saudacao"></span></a>
                         </li>
                     </ul>
                 </div>
-            </nav>   
-    
+            </nav>
             
             <p class="h4 text-center mt-4">Área de Transferência</p>
         
@@ -63,15 +64,15 @@
                   <div class="card-body ">
                     <div class="form-group col-md-8 offset-md-2">
                         <div class="custom-control custom-radio">
-                            <span><strong>Conta Selecionada:</strong> Poupança</span>                            
+                            <strong>Conta Selecionada: </strong><span id="contaSelecionada"></span>                            
                         </div>
                     
                         <div class="custom-control custom-radio">
-                            <span><strong >Número:</strong> 5555-5</span>
+                           <strong >Número: </strong><span id="numero" ></span>
                         </div>
                         
                         <div class="custom-control custom-radio">
-                            <span ><strong>Saldo:</strong><strong class="text-success" > R$ 500,00</strong></span>
+                            <strong>Saldo: </strong><strong class="text-success" >R$ <span id="saldo"></span></strong>
                         </div>
                         
                     </div>                      

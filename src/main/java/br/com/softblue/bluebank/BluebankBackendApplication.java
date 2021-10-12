@@ -28,7 +28,7 @@ public class BluebankBackendApplication implements RepositoryRestConfigurer {
 		config.getCorsRegistry()
 			.addMapping("/**")
 			.allowedOrigins("*")
-			.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS"); 
+			.allowedMethods("GET", "POST", "PUT", "DELETE"); 
 		
 		logger.info("Repository CORS setup...OK!");
 		

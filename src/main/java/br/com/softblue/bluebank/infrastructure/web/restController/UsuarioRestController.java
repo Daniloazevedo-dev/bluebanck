@@ -228,4 +228,14 @@ public class UsuarioRestController {
 		return new ResponseEntity<>(usuarioAtualizado, HttpStatus.OK);
 
 	}
+	
+	@GetMapping(value = "/{numeroConta/{tipo}}")
+	public ResponseEntity<ContaBancaria> buscaConta(@PathVariable String numeroConta, @PathVariable String tipo) throws ContaInexistenteException {
+		ContaBancaria contaBancaria = contaBancariaService.pesquisaPorNumeroETipo(numeroConta, tipo);
+		if(contaBancaria == null) {
+			throw new ContaInexistenteException("Conta bancaria inexistente");
+		}
+		
+		return new ResponseEntity<>(contaBancaria, HttpStatus.OK);
+	}
 }

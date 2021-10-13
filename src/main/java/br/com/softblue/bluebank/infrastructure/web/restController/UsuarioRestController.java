@@ -92,11 +92,13 @@ public class UsuarioRestController {
 	}
 
 	@PutMapping(value = "/transferencia/{tipoDaContaRemetente}/{numeroDaContaRemetente}/{tipoDaContaDestinatario}/{numeroDaContaDestinatario}/{valorTransferencia}", produces = "application/json")
-	public ResponseEntity<String> transferencia(@PathVariable String tipoDaContaRemetente,
+	public ResponseEntity<ContaBancaria> transferencia(@PathVariable String tipoDaContaRemetente,
 			@PathVariable String numeroDaContaRemetente, @PathVariable String tipoDaContaDestinatario,
 			@PathVariable String numeroDaContaDestinatario, @PathVariable BigDecimal valorTransferencia
 
 	) throws ContaInexistenteException, ValorNegativoException, SaldoInsufucienteException {
+		
+		ContaBancaria contaBancariaRemetenteAtl = new ContaBancaria();
 
 		ContaBancaria contaBDRemetente = contaBancariaService.pesquisaPorNumeroETipo(tipoDaContaRemetente,
 				numeroDaContaRemetente);
@@ -129,7 +131,7 @@ public class UsuarioRestController {
 			contaBDRemetente.setSaldo(saldoAtualRemetente.subtract(valorTransferencia));
 			contaBDDestinatario.setSaldo(saldoAtualDestinatario.add(valorTransferencia));
 
-			contaBancariaService.save(contaBDRemetente);
+			contaBancariaRemetenteAtl = contaBancariaService.save(contaBDRemetente);
 			contaBancariaService.save(contaBDDestinatario);
 
 			extratoService.save(contaBDRemetente.getUsuario(), "Transfêrencia", valorTransferencia,
@@ -138,7 +140,7 @@ public class UsuarioRestController {
 					tipoDaContaDestinatario);
 		}
 
-		return new ResponseEntity<>("Transferência realizada com sucesso!", HttpStatus.OK);
+		return new ResponseEntity<>(contaBancariaRemetenteAtl, HttpStatus.OK);
 
 	}
 
@@ -190,7 +192,7 @@ public class UsuarioRestController {
 			EmailExistenteException, CpfExistenteException, UsuarioInexistenteException {
 
 		Usuario usuarioAtualizado = new Usuario();
-		
+
 		String emailUsuario = SecurityUtils.userDetailsImpl();
 
 		Usuario usuarioBanco = usuarioService.buscarUsuarioPorEmail(emailUsuario);
@@ -215,7 +217,7 @@ public class UsuarioRestController {
 					throw new CpfExistenteException("Já existe um usuário com este cpf.");
 				}
 			}
-			
+
 			usuarioBanco.setTitular(usuario.getTitular());
 			usuarioBanco.setEmail(usuario.getEmail());
 			usuarioBanco.setCpf(usuario.getCpf());
@@ -228,14 +230,21 @@ public class UsuarioRestController {
 		return new ResponseEntity<>(usuarioAtualizado, HttpStatus.OK);
 
 	}
-	
-	@GetMapping(value = "/{numeroConta/{tipo}}")
-	public ResponseEntity<ContaBancaria> buscaConta(@PathVariable String numeroConta, @PathVariable String tipo) throws ContaInexistenteException {
-		ContaBancaria contaBancaria = contaBancariaService.pesquisaPorNumeroETipo(numeroConta, tipo);
-		if(contaBancaria == null) {
-			throw new ContaInexistenteException("Conta bancaria inexistente");
+
+	@GetMapping(value = "/{numeroConta}/{tipo}", produces = "application/json")
+	public ResponseEntity<ContaBancaria> buscaConta(
+			@PathVariable String numeroConta,
+			@PathVariable String tipo) throws ContaInexistenteException {
+		
+		ContaBancaria contaBancaria = contaBancariaService.pesquisaPorNumeroETipo(tipo,numeroConta);
+		
+		
+		if (contaBancaria == null) {
+			throw new ContaInexistenteException("Conta bancaria inexistente.");
 		}
 		
+		contaBancaria.setTitular(contaBancaria.getUsuario().getTitular());
+
 		return new ResponseEntity<>(contaBancaria, HttpStatus.OK);
 	}
 }

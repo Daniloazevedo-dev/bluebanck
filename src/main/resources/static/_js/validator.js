@@ -12,12 +12,10 @@
 					event.preventDefault();
 					event.stopPropagation();
 
-				} else if (form.checkValidity() === true && form.getAttribute("id") === "formVerificaContaDestino") {
+				} else if (form.checkValidity() === true) {
 
 					event.preventDefault();
-					event.stopPropagation();
 
-					$('#ModalDadosDestinatario').modal('show');
 				}
 
 				form.classList.add('was-validated');

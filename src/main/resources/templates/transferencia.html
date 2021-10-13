@@ -13,7 +13,7 @@
         
         <script src="/_js/transferencia.js" type="text/javascript"></script>
         <script src="_js/mask.js" type="text/javascript"></script>
-        <script src="_js/validateModalTransferencia.js" type="text/javascript"></script>
+        
     </head>
     <body>
             <nav class="navbar navbar-expand-md navbar-light bg-light">
@@ -85,7 +85,7 @@
                     </div>
                       <div class="card-body ">
                           
-                          <form method="" action="" class="validator" id="formVerificaContaDestino" novalidate>
+                          <form class="validator" id="formVerificaContaDestino" novalidate>
                           
                               <div class="form-group col-md-8 offset-md-2">
                                 <label for="numeroDaContaDestino">Número da conta:</label>
@@ -98,13 +98,13 @@
                               <div class="form-group col-md-8 offset-md-2 border p-2">
                                     <span> Tipo da conta:</span>
                                     <div class="custom-control custom-radio mt-1 ">
-                                      <input type="radio" class="custom-control-input" id="contaPoupanca" name="conta" required>
-                                      <label class="custom-control-label" for="contaPoupanca">Conta Poupança</label>
+                                      <input type="radio" class="custom-control-input" id="contaPoupancaDestino" value="poupanca" name="conta" required>
+                                      <label class="custom-control-label" for="contaPoupancaDestino">Conta Poupança</label>
                                     </div>
 
                                     <div class="custom-control custom-radio">
-                                      <input type="radio" class="custom-control-input" id="contaCorrente" name="conta" required>
-                                      <label class="custom-control-label" for="contaCorrente">Conta Corrente</label>
+                                      <input type="radio" class="custom-control-input" id="contaCorrenteDestino" name="conta" value="corrente" required>
+                                      <label class="custom-control-label" for="contaCorrenteDestino">Conta Corrente</label>
                                         <div class="invalid-feedback">
                                           <p>É Obrigatório selecionar o tipo da conta!</p>
                                         </div>
@@ -112,10 +112,12 @@
 
                               </div>
                               <div class="form-group text-center">
-                                <input class="btn btn-primary" id="buttonVerificarContaDestino" type="submit" value="Verificar conta"  />
+                                <input class="btn btn-primary" id="buttonVerificarContaDestino" onclick="verificarConta()" type="submit" value="Verificar conta"  />
                               </div>
 
                           </form>
+                          <form class="validator" id="formTransferencia" novalidate>
+                          	
                           
                           <div class="form-group col-md-8 offset-md-2">
                             <label for="valorTransferencia">Informe o valor a ser transferido:</label>
@@ -127,9 +129,11 @@
                     </div>
                 </div>
                 <div class="form-group text-center mt-4">
-                    <a  href="home.html"> <input class="btn btn-primary" type="button" value="voltar" /></a>
-                    <a  href="home.html"><input class="btn btn-primary" type="submit" value="Transferir" id="valorTransferencia" name="valorTransferencia"/></a>
+                    <input class="btn btn-primary" onclick="redirectHome()" type="button" value="voltar" />
+                   <input class="btn btn-primary" type="submit" onclick="transferir()" value="Transferir" id="btnValorTransferencia" name="btnValorTransferencia"/>
                 </div>
+                
+                </form>
             
             <!-- Modal -->
                 <div class="modal fade" id="ModalDadosDestinatario" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true" data-backdrop="static">
@@ -142,22 +146,22 @@
                          <div class="form-group">
                              
                               <div class="custom-control custom-radio">
-                                <span><strong >Número: </strong>7777-7</span>
+                                <strong >Número: </strong><span id="numeroDestinatario" ></span>
                             </div>
                              
                             <div class="custom-control custom-radio">
-                                <span><strong>Tipo da Conta:</strong> Poupança</span>                            
+                                <strong>Tipo da Conta: </strong><span id="tipoContaDestinatario" ></span>                            
                             </div>
 
                             <div class="custom-control custom-radio">
-                                <span><strong>Titular: </strong>Jaqueline Maria dos santos</span>
+                                <strong>Titular: </strong><span id="titularDestinatario" ></span>
                             </div>
                         
                         </div> 
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-Warning" data-dismiss="modal">Corrigir</button>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Confirmar</button>
+                        <button type="button" class="btn btn-Warning" onclick="contaVerificada = false" data-dismiss="modal">Corrigir</button>
+                        <button type="button" class="btn btn-primary" onclick="confirmaConta()" data-dismiss="modal">Confirmar</button>
                       </div>
                     </div>
                   </div>

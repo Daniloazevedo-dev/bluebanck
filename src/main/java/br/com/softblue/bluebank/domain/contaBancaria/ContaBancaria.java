@@ -8,11 +8,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import br.com.softblue.bluebank.domain.usuario.Usuario;
 import lombok.EqualsAndHashCode;
@@ -41,6 +43,10 @@ public class ContaBancaria {
     private BigDecimal saldo;
     
     private Boolean ativo;
+    
+    @Transient
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String titular;
     
     @JsonIgnore
     @NotNull

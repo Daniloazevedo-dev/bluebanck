@@ -44,8 +44,8 @@ public class ContaBancariaService {
 
     }
     
-    public void save(ContaBancaria contaBancaria) {
-	contaBancariaRepository.save(contaBancaria);
+    public ContaBancaria save(ContaBancaria contaBancaria) {
+	return contaBancariaRepository.save(contaBancaria);
     }
 
     public ContaBancaria pesquisaPorNumeroDaConta(String numero) {

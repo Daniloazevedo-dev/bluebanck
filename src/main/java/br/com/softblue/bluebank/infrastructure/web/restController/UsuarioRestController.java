@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +25,6 @@ import br.com.softblue.bluebank.domain.contaBancaria.ContaInexistenteException;
 import br.com.softblue.bluebank.domain.contaBancaria.SaldoInsufucienteException;
 import br.com.softblue.bluebank.domain.contaBancaria.ValorNegativoException;
 import br.com.softblue.bluebank.domain.extrato.Extrato;
-import br.com.softblue.bluebank.domain.search.Search;
 import br.com.softblue.bluebank.domain.usuario.CpfExistenteException;
 import br.com.softblue.bluebank.domain.usuario.EmailExistenteException;
 import br.com.softblue.bluebank.domain.usuario.TitularExistenteException;
@@ -144,23 +144,27 @@ public class UsuarioRestController {
 
 	}
 
-	@GetMapping(value = "/extrato/search", produces = "application/json")
-	public List<Extrato> buscarExtratos(@RequestBody Search search) throws DataInicialException {
+	@GetMapping(value = "/extrato/search/{dataInicial}/{dataFinal}", produces = "application/json")
+	public List<Extrato> buscarExtratos(
+			@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dataInicial,
+			@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dataFinal
+			
+			) throws DataInicialException {
 
-		if (search.getDataInicial() == null) {
+		if (dataInicial == null) {
 			throw new DataInicialException("Insira uma data Inicial");
 		}
 
-		if (search.getDataFinal() == null) {
-			search.setDataFinal(LocalDate.now());
+		if (dataFinal == null) {
+			dataFinal = LocalDate.now();
 		}
 
 		String emailUsuario = SecurityUtils.userDetailsImpl();
 
 		Usuario usuario = usuarioService.buscarUsuarioPorEmail(emailUsuario);
 
-		List<Extrato> extratos = extratoService.pesquisaExtratoPorData(usuario.getId(), search.getDataInicial(),
-				search.getDataFinal());
+		List<Extrato> extratos = extratoService.pesquisaExtratoPorData(usuario.getId(), dataInicial,
+				dataFinal);
 
 		return extratos;
 

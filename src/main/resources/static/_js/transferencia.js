@@ -189,8 +189,6 @@ function tranferencia(url) {
 			credenciais = { contasBancarias: credenciais.contasBancarias, email: credenciais.email, displayName: credenciais.displayName, cpf: credenciais.cpf, token: credenciais.token };
 			localStorage.setItem("credenciais", JSON.stringify(credenciais));
 		}
-
-
 	}
 
 }

@@ -25,43 +25,45 @@
                 </div>
             </nav>  
             
-            <nav id="menuLogado"  class="navbar navbar-expand-md navbar-light bg-light">
-                <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="home.html">HOME</a>
-                        </li>                  
+           	<nav id="menuLogado" class="navbar navbar-expand-md navbar-light bg-light">
+		<div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="/home">HOME</a>
+				</li>
 
-                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              SERVIÇOS
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                              <a class="dropdown-item" href="transferencia.html">Transferêcia</a>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						SERVIÇOS
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/transferencia">Transferêcia</a>
+						<a class="dropdown-item" href="/extrato">Extrato</a>
+					</div>
 
-                              <a class="dropdown-item" href="extrato.html">Extrato</a>
-                            </div>
+				<li class="nav-item">
+					<a class="nav-link" href="/public/login" onclick="logout()">SAIR</a>
+				</li>
+			</ul>
+		</div>
+		<div class="mx-auto order-0">
+			<a class="navbar-brand mx-auto" href="home.html"><img src="/_imagens/logo.png" height="100"
+					class="d-inline-block align-top " alt="Logo do sistema"></a>
+			<button class="navbar-toggler float-right mt-5" type="button" data-toggle="collapse"
+				data-target=".dual-collapse2">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+		</div>
 
-                            <li class="nav-item">
-                                 <a class="nav-link" href="/public/login" onclick="logout()">SAIR</a>
-                            </li>
-                    </ul>
-                </div>
-                <div class="mx-auto order-0">
-                    <a class="navbar-brand mx-auto" href="home.html"><img src="/_imagens/logo.png" height="100" class="d-inline-block align-top " alt="Logo do sistema"></a>
-                    <button class="navbar-toggler float-right mt-5" type="button" data-toggle="collapse" data-target=".dual-collapse2">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                </div>
-            
-                <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Olá <span id="displayName"></span>, Bom dia!</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+		<div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="#">Olá <span id="displayName"></span>, <span id="saudacao"></span></a>
+				</li>
+			</ul>
+		</div>
+	</nav>
             
             <p class="h4 text-center mt-4">Abertura de Conta</p>
         

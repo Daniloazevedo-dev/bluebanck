@@ -118,7 +118,7 @@ function setCredenciais(credenciais,data) {
 function voltar() {
 	var credenciais = JSON.parse(localStorage.getItem("credenciais"));
 	if(credenciais !== null) {
-		window.location.href = "/index";
+		window.location.href = "/home";
 	} else {
 		window.location.href = "/public/login";
 	}

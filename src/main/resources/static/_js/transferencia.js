@@ -1,3 +1,7 @@
+$(document).ready(function() {
+    $('#tableExtrato').DataTable();
+} );
+
 var contaVerificada = false;
 var tipoContaRemetente;
 var numeroContaRemetente;

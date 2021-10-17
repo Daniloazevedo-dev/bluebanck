@@ -134,7 +134,7 @@ public class UsuarioRestController {
 			contaBancariaRemetenteAtl = contaBancariaService.save(contaBDRemetente);
 			contaBancariaService.save(contaBDDestinatario);
 
-			extratoService.save(contaBDRemetente.getUsuario(), "Transfêrencia", valorTransferencia,
+			extratoService.save(contaBDRemetente.getUsuario(), "Transferência", valorTransferencia,
 					tipoDaContaRemetente);
 			extratoService.save(contaBDDestinatario.getUsuario(), "Depósito recebido", valorTransferencia,
 					tipoDaContaDestinatario);

@@ -24,8 +24,6 @@ function setValoresExtrato() {
 function setSaudacao() {
 	let dataAtual = new Date();
 
-	console.log(dataAtual.getHours())
-
 	if (dataAtual.getHours() >= 1 && dataAtual.getHours() <= 11) {
 		saudacao.innerHTML = "Bom dia!";
 	} else if (dataAtual.getHours() >= 12 && dataAtual.getHours() <= 18) {
@@ -71,8 +69,6 @@ function buscaExtrato(dataInicio, dataFim, url) {
 		"dataFinal": dataFim
 	};
 
-	console.log(data, url);
-
 	$.ajax({
 		type: "GET",
 		url: url + "/" + dataInicio + "/" + dataFim,
@@ -102,14 +98,20 @@ function dataAtualFormatada() {
 
 
 function preencheTable(data) {
-
 	var linhas = "";
 	if (data.length === 0) {
-		tableBody.innerHTML = "<td colspan='3' >Não há dados para serem mostrados.</td>";
+		tableBody.innerHTML = "<td colspan='4' >Não há dados para serem mostrados.</td>";
 	} else {
 		for (var cont = 0; cont <= data.length; cont++) {
-			console.log(data[cont].data);
-			linhas = linhas + "<tr>" + "<td>" + data[cont].data + "</td>" + "<td>" + data[cont].descricao + "</td>" + "<td>" + data[cont].valor.toLocaleString('pt-br', { minimumFractionDigits: 2 }) + "</td>" + "</tr>";
+			var conta = data[cont].tipoDaConta;
+			
+			if(conta === "poupanca") {
+				conta = "Poupança";
+			} if(conta === "corrente") {
+				conta = "Corrente";
+			}
+			
+			linhas = linhas + "<tr>" + "<td>" + formataData(data[cont].data) + "</td>" + "<td>" + data[cont].descricao + "</td>" + "<td>" + data[cont].valor.toLocaleString('pt-br', { minimumFractionDigits: 2 }) + "</td>" + "<td>" + conta + "</td>" +"</tr>";
 			tableBody.innerHTML = linhas;
 		}
 	}
@@ -118,6 +120,30 @@ function preencheTable(data) {
 
 function redirectHome() {
 	window.location.href = "/home"
+}
+
+function formataData(data) {
+	data = new Date(data);
+	var mes = data.getMonth() + 1;
+	var dia = data.getDate() + 1
+	var mesFormatado = corrigeMesEDia(mes);
+	var diaFormatado = corrigeMesEDia(dia);
+	data = (( diaFormatado)) + "/" + ((mesFormatado)) + "/" + data.getFullYear();
+	return data;
+}
+
+function corrigeMesEDia(diaOuMes) {
+	
+	var numeros = [1,2,3,4,5,6,7,8,9];
+	var cont = 0;
+	
+	while(cont <= numeros.length) {
+		if(diaOuMes === cont) {
+			diaOuMes = '0' + diaOuMes ;
+		} 
+		cont++;
+	}
+	return diaOuMes;
 }
 
 window.onload = setValoresExtrato

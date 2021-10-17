@@ -26,6 +26,7 @@ import br.com.softblue.bluebank.application.util.GerarNumero;
 import br.com.softblue.bluebank.domain.contaBancaria.ContaBancaria;
 import br.com.softblue.bluebank.domain.contaBancaria.ContaInexistenteException;
 import br.com.softblue.bluebank.domain.contaBancaria.ValorNegativoException;
+import br.com.softblue.bluebank.domain.recuperaSenha.RecuperaSenha;
 import br.com.softblue.bluebank.domain.usuario.CpfExistenteException;
 import br.com.softblue.bluebank.domain.usuario.EmailExistenteException;
 import br.com.softblue.bluebank.domain.usuario.TitularExistenteException;
@@ -123,7 +124,7 @@ public class PublicRestController {
 	}
 
 	@PostMapping(value = "/recuperar/{email}", produces = "application/json")
-	public ResponseEntity<String> recuperar(@PathVariable String email) throws Exception {
+	public ResponseEntity<RecuperaSenha> recuperar(@PathVariable String email) throws Exception {
 
 		Usuario usuarioBD = usuarioService.buscarUsuarioPorEmail(email);
 
@@ -138,7 +139,7 @@ public class PublicRestController {
 
 		enviaEmailService.enviarEmail("Recuperação de senha", email, "Sua nova senha é: " + novaSenha);
 
-		return new ResponseEntity<>("Senha enviada para o seu email.", HttpStatus.OK);
+		return new ResponseEntity<>(new RecuperaSenha("Senha enviada para o seu email."), HttpStatus.OK);
 
 	}
 

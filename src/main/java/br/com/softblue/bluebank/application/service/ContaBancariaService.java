@@ -16,60 +16,60 @@ import br.com.softblue.bluebank.domain.usuario.Usuario;
 @Service
 public class ContaBancariaService {
 
-    @Autowired
-    private ContaBancariaRepository contaBancariaRepository;
+	@Autowired
+	private ContaBancariaRepository contaBancariaRepository;
 
-    public List<ContaBancaria> novaConta(Usuario usuario) {
+	public List<ContaBancaria> novaConta(Usuario usuario) {
 
-	List<ContaBancaria> contasBancarias = new ArrayList<>();
+		List<ContaBancaria> contasBancarias = new ArrayList<>();
 
-	ContaBancaria contaCorrente = new ContaBancaria();
-	contaCorrente.setNumero(gerarNumeroDaConta());
-	contaCorrente.setTipo(TiposDeConta.corrente.toString());
-	contaCorrente.setSaldo(BigDecimal.valueOf(0));
-	contaCorrente.setUsuario(usuario);
-	contaCorrente.setAtivo(true);
+		ContaBancaria contaCorrente = new ContaBancaria();
+		contaCorrente.setNumero(gerarNumeroDaConta());
+		contaCorrente.setTipo(TiposDeConta.corrente.toString());
+		contaCorrente.setSaldo(BigDecimal.valueOf(0));
+		contaCorrente.setUsuario(usuario);
+		contaCorrente.setAtivo(true);
 
-	ContaBancaria contaPoupanca = new ContaBancaria();
-	contaPoupanca.setNumero(gerarNumeroDaConta());
-	contaPoupanca.setTipo(TiposDeConta.poupanca.toString());
-	contaPoupanca.setSaldo(BigDecimal.valueOf(0));
-	contaPoupanca.setUsuario(usuario);
-	contaPoupanca.setAtivo(false);
+		ContaBancaria contaPoupanca = new ContaBancaria();
+		contaPoupanca.setNumero(gerarNumeroDaConta());
+		contaPoupanca.setTipo(TiposDeConta.poupanca.toString());
+		contaPoupanca.setSaldo(BigDecimal.valueOf(0));
+		contaPoupanca.setUsuario(usuario);
+		contaPoupanca.setAtivo(false);
 
-	contasBancarias.add(contaCorrente);
-	contasBancarias.add(contaPoupanca);
+		contasBancarias.add(contaCorrente);
+		contasBancarias.add(contaPoupanca);
 
-	return contasBancarias;
+		return contasBancarias;
 
-    }
-    
-    public ContaBancaria save(ContaBancaria contaBancaria) {
-	return contaBancariaRepository.save(contaBancaria);
-    }
+	}
 
-    public ContaBancaria pesquisaPorNumeroDaConta(String numero) {
-	return contaBancariaRepository.findByNumero(numero);
-    }
-    
-    public ContaBancaria pesquisaPorNumeroETipo(String tipo, String numero) {
-	return contaBancariaRepository.findByNumeroAndTipo(tipo, numero);
-    }
-    
-    private String gerarNumeroDaConta() {
+	public ContaBancaria save(ContaBancaria contaBancaria) {
+		return contaBancariaRepository.save(contaBancaria);
+	}
 
-	String numeroDaconta = null;
-	boolean contaExistente = true;
+	public ContaBancaria pesquisaPorNumeroDaConta(String numero) {
+		return contaBancariaRepository.findByNumero(numero);
+	}
 
-	do {
-	    numeroDaconta = GerarNumero.gerar();
+	public ContaBancaria pesquisaPorNumeroETipo(String tipo, String numero) {
+		return contaBancariaRepository.findByNumeroAndTipo(tipo, numero);
+	}
 
-	    if (pesquisaPorNumeroDaConta(numeroDaconta) == null) {
-		contaExistente = false;
-	    }
+	private String gerarNumeroDaConta() {
 
-	} while (contaExistente);
+		String numeroDaconta = null;
+		boolean contaExistente = true;
 
-	return numeroDaconta;
-    }
+		do {
+			numeroDaconta = GerarNumero.gerar();
+
+			if (pesquisaPorNumeroDaConta(numeroDaconta) == null) {
+				contaExistente = false;
+			}
+
+		} while (contaExistente);
+
+		return numeroDaconta;
+	}
 }

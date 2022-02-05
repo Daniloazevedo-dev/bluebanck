@@ -70,7 +70,7 @@ public class InsertTestData {
 		for (ContaBancaria novaConta : contasBancarias) {
 			usuarioService.saveUsuario(usuario, novaConta);
 			extratoService.save(usuario, "Conta Criada", novaConta.getSaldo(), novaConta.getTipo());
-		}
+		} 
 	}
 
 	private List<ContaBancaria> createContaBancaria(Usuario usuario, String numeroPoupanca, String numeroCorrente) {

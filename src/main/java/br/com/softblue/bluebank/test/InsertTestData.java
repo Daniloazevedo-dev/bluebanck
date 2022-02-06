@@ -50,7 +50,7 @@ public class InsertTestData {
 		createUsers("Pedro Lima", "pedrolima@email.com", "32165498732", "abc", "369258", "963852",
 				Roles.ADMIN.toString());
 		deposito("369258", BigDecimal.valueOf(1900));
-		deposito("963852", BigDecimal.valueOf(750));
+		deposito("963852", BigDecimal.valueOf(750)); 
 	}
 
 	private void createUsers(String nome, String email, String cpf, String senha, String numeroPoupanca,

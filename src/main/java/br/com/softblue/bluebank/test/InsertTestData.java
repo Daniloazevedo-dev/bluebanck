@@ -20,7 +20,7 @@ import br.com.softblue.bluebank.domain.usuario.Roles;
 import br.com.softblue.bluebank.domain.usuario.Usuario;
 
 @Component
-public class InsertTestData {
+public class InsertTestData { 
 
 	private UsuarioService usuarioService;
 	private ExtratoService extratoService;

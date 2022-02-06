@@ -32,7 +32,7 @@ public class InsertTestData {
 		this.usuarioService = usuarioService;
 		this.extratoService = extratoService;
 		this.contaBancariaService = contaBancariaService;
-	}
+	} 
 
 	@EventListener
 	public void onApplicationEvent(ContextRefreshedEvent event) {

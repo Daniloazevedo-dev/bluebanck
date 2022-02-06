@@ -6,8 +6,8 @@ plugins {
 
 group = 'br.com.softblue'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '8'
-targetCompatibility = '8'
+sourceCompatibility = '13'
+targetCompatibility = '13'
 
 configurations {
 	compileOnly {

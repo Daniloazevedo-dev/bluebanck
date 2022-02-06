@@ -130,7 +130,7 @@ function transferir() {
 	} else {
 		if (formTransferencia.checkValidity() === true && formVerificaContaDestino.checkValidity() === true) {
 
-			var url = rota + "/usuario/transferencia/";
+			var url = rota + "usuario/transferencia/";
 			let numeroContaDestino = numeroDaContaDestino.value;
 			let tipoContaDestino;
 

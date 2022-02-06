@@ -26,14 +26,14 @@ public class ContaBancariaService {
 		ContaBancaria contaCorrente = new ContaBancaria();
 		contaCorrente.setNumero(gerarNumeroDaConta());
 		contaCorrente.setTipo(TiposDeConta.corrente.toString());
-		contaCorrente.setSaldo(BigDecimal.valueOf(0));
+		contaCorrente.setSaldo(BigDecimal.valueOf(200));
 		contaCorrente.setUsuario(usuario);
 		contaCorrente.setAtivo(true);
 
 		ContaBancaria contaPoupanca = new ContaBancaria();
 		contaPoupanca.setNumero(gerarNumeroDaConta());
 		contaPoupanca.setTipo(TiposDeConta.poupanca.toString());
-		contaPoupanca.setSaldo(BigDecimal.valueOf(0));
+		contaPoupanca.setSaldo(BigDecimal.valueOf(400));
 		contaPoupanca.setUsuario(usuario);
 		contaPoupanca.setAtivo(false);
 

@@ -6,8 +6,8 @@ plugins {
 
 group = 'br.com.softblue'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = JavaVersion.toVersion('8')
-targetCompatibility = JavaVersion.toVersion('8')
+sourceCompatibility = '8'
+targetCompatibility = '8'
 
 configurations {
 	compileOnly {

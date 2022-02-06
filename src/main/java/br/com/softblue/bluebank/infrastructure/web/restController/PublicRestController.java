@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +33,7 @@ import br.com.softblue.bluebank.domain.usuario.EmailExistenteException;
 import br.com.softblue.bluebank.domain.usuario.TitularExistenteException;
 import br.com.softblue.bluebank.domain.usuario.Usuario;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/public")
 public class PublicRestController {

@@ -75,6 +75,7 @@ public class PublicRestController {
 
 		for (ContaBancaria novaConta : contasBancarias) {
 			novoUsuario = usuarioService.saveUsuario(usuario, novaConta);
+			extratoService.save(usuario, "Conta Criada", novaConta.getSaldo(), novaConta.getTipo());
 		}
 
 		return new ResponseEntity<>(novoUsuario, HttpStatus.OK);

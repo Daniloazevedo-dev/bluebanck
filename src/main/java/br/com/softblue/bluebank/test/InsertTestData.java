@@ -40,7 +40,7 @@ public class InsertTestData {
 		createUsers("João Silva", "joaosilva@email.com", "15963487965", "abc", "123456", "654321",
 				Roles.ADMIN.toString()); 
 		deposito("123456", BigDecimal.valueOf(500));
-		deposito("654321", BigDecimal.valueOf(1250));
+		deposito("654321", BigDecimal.valueOf(1250)); 
 
 		createUsers("Maria Santos", "mariasantos@email.com", "147852369785", "abc", "147258", "258741",
 				Roles.ADMIN.toString());

@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -Dspring.profiles.active=prod -jar target/bluebank-backend.jar
+web: java -Dserver.port=$PORT -Dspring.profiles.active=prod -jar build/libs/bluebank-backend-0.0.1-SNAPSHOT.jar

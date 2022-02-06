@@ -80,7 +80,7 @@ public class InsertTestData {
 		contaPoupanca.setTipo(TiposDeConta.poupanca.toString());
 		contaPoupanca.setSaldo(BigDecimal.valueOf(0));
 		contaPoupanca.setUsuario(usuario);
-		contaPoupanca.setAtivo(true);
+		contaPoupanca.setAtivo(true); 
 
 		ContaBancaria contaCorrente = new ContaBancaria();
 		contaCorrente.setNumero(numeroCorrente);

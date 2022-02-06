@@ -41,7 +41,7 @@ function redirectHome() {
 
 function buscaExtratoPorData() {
 
-	var url = "http://localhost:8080/usuario/extrato/search";
+	var url =  rota + "usuario/extrato/search";
 	let inicio = dataInicial.value;
 	let fim = dataFinal.value;
 

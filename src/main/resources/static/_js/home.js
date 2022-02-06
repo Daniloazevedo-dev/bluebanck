@@ -2,7 +2,7 @@ function selecionarConta() {
 	
 	var credenciais = JSON.parse(localStorage.getItem("credenciais"));
 	
-	var url = "http://localhost:8080/usuario/altera-tipo-conta";
+	var url = rota + "usuario/altera-tipo-conta";
 	var token = credenciais.token;
 	var data = credenciais.contasBancarias;
 

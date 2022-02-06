@@ -72,7 +72,7 @@ function verificarConta() {
 
 	if (formVerificaContaDestino.checkValidity() === true) {
 
-		var url = "http://localhost:8080/usuario/";
+		var url = rota + "usuario/";
 		let numeroContaDestino = numeroDaContaDestino.value;
 		let tipoContaDestino;
 
@@ -130,7 +130,7 @@ function transferir() {
 	} else {
 		if (formTransferencia.checkValidity() === true && formVerificaContaDestino.checkValidity() === true) {
 
-			var url = "http://localhost:8080/usuario/transferencia/";
+			var url = rota + "/usuario/transferencia/";
 			let numeroContaDestino = numeroDaContaDestino.value;
 			let tipoContaDestino;
 

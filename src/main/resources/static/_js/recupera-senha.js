@@ -1,7 +1,7 @@
 function recuperaSenha() {
 	if (form.checkValidity() === true) {
 		var emailCadastrado = email.value;
-		var url = "http://localhost:8080/public/recuperar/" + emailCadastrado;
+		var url = rota + "public/recuperar/" + emailCadastrado;
 		
 		$.ajax({
 			type: "POST",

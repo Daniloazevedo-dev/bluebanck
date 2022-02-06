@@ -6,7 +6,7 @@ function novaConta(form) {
 
 	if (form.checkValidity() === true) {
 
-		var url = "http://localhost:8080/public/nova-conta";
+		var url = rota + "public/nova-conta";
 
 		var titular = form.titular.value;
 		var email = form.email.value;
@@ -78,7 +78,7 @@ function setDadosParaAlterarCadastro() {
 
 function alterarUsuario(usuario, credenciais) {
 
-	let url = "http://localhost:8080/usuario/altetar-dados";
+	let url = rota + "usuario/altetar-dados";
 	let data = {
 		titular: usuario.titular,
 		email: usuario.email,

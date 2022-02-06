@@ -1,0 +1,1 @@
+var rota = "https://bluebank-banco-digital.herokuapp.com/";

@@ -4,7 +4,7 @@ function login(form) {
 
 	if (form.checkValidity() === true) {
 
-		var url = "http://localhost:8080/login";
+		var url = rota + "login";
 		var email = form.email.value;
 		var senha = form.senha.value;
 

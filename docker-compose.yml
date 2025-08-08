@@ -1,20 +1,35 @@
 version: '3.8'
 
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: mysql-container
+  bluebank-app:
+    image: bluebank-app
+    container_name: bluebank-app
+    build: .
+    links:
+      - bluebank-mysql
+    ports:
+      - "8081:8081"
+    networks:
+      - net-bluebank
+
+  bluebank-mysql:
+    image: mysql:8.0.43
     restart: always
     ports:
       - "3306:3306"
+    networks:
+      - net-bluebank
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: bluebank
       MYSQL_USER: bluebank
       MYSQL_PASSWORD: root
-      command: --default-authentication-plugin=mysql_native_password
+    command: --default-authentication-plugin=mysql_native_password
     volumes:
       - mysql_data:/var/lib/mysql
 
+networks:
+  net-bluebank:
+    driver: bridge
 volumes:
   mysql_data:

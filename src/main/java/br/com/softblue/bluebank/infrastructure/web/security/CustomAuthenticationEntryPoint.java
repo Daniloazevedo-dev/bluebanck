@@ -24,7 +24,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         
         response.setStatus(403);
         response.setContentType("application/json");
-        response.getWriter().write("{ \"error\": \"Login ou senha Incorreta.\" }");
+        response.getWriter().write("{ \"error\": \"Credenciais Inválidas.\" }");
         
     }
 }

@@ -27,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 		.httpBasic()
 	.and()
 		.authorizeRequests()
-			.antMatchers("/public/**","/_imagens/**", "/_css/**", "/_js/**", "/index/**", "/extrato/**", "/transferencia/**","/home/**").permitAll()
+			.antMatchers("/h2-console/**","/public/**","/_imagens/**", "/_css/**", "/_js/**", "/index/**", "/extrato/**", "/transferencia/**","/home/**").permitAll()
 			.antMatchers(HttpMethod.OPTIONS).permitAll()
 			.anyRequest().authenticated()
 		.and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())

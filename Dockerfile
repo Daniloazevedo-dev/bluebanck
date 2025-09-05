@@ -10,5 +10,5 @@ RUN ./gradlew clean build -x test
 FROM openjdk:8-jdk-alpine
 COPY --from=builder /home/gradle/src/build/libs/*.jar bluebank.jar
 EXPOSE 8081
-ENTRYPOINT ["java","-Dspring.profiles.active=docker","-jar","/bluebank.jar"]
+ENTRYPOINT ["java","-Dspring.profiles.active=tst","-jar","/bluebank.jar"]
 
